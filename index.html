@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CURIS 4 Development</title>
+    <link rel="stylesheet" href="react/react-0.14.3/examples/shared/css/base.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+
+
+
+
+    <script src="react/react.js"></script>
+    <script src="react/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+    <script type="text/babel">
+      function Welcome(props) {
+        return <h1>{props.name} <br/> {new Date().toLocaleTimeString()}</h1>;
+      }
+
+      function App() {
+        return (
+          <div>
+            <Welcome name="CURIS 4.0" />
+          </div>
+      );
+      }
+
+      function tick() {
+        ReactDOM.render(
+          <App />,
+          document.getElementById('root')
+        );
+      }
+
+      setInterval(tick, 1000);
+    </script>
+  </body>
+</html>

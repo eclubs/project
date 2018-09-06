@@ -1,0 +1,89 @@
+#brand-bar {
+    background-color: #b1040e;
+    line-height: 1;
+    height: 2.6666666667em;
+    width: 100%;
+    top: 0;
+    text-align: right;
+    backface-visibility: hidden;
+}
+#brand-bar #header--wordmark {
+    color: #fff;
+    top: .5rem;
+    display: inline-block;
+    float: left;
+    font-size: 1.4em;
+    font-weight: 400;
+    line-height: 1.25em;
+    margin-left: 40px;
+    text-decoration: none;
+    transition: all .5s ease;
+    position: relative;
+    font-family: Stanford,Source Serif Pro,Georgia,Times,Times New Roman,serif!important;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: none;
+    transform: translateZ(0);
+    letter-spacing: 0;
+    font-feature-settings: "liga";
+    font-variant-ligatures: discretionary-ligatures;
+}
+#index-main {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 28px;
+    width: 560px;
+    align-content: center;
+    text-justify: distribute;
+    -webkit-transition: all 4s ease-out 0s;
+    -moz-transition: all 2s ease-out 0s;
+    -ms-transition: all 2s ease-out 0s;
+    -o-transition: all 2s ease-out 0s;
+    transition: all 2s ease-out 0s;
+}
+.app img {
+    background: #fff;
+    width: 115px;
+    height: 115px;
+    border: 1px solid #999;
+    border-radius: 27px;
+    box-shadow: 3px 3px 3px #999;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}
+.app:hover img {
+    box-shadow: 8px 8px 8px #155b99;
+}
+.app .name {
+    color: #444;
+    font-size: 14px;
+    display: inline-block;
+    margin: 10px auto 0;
+    border-bottom: 1px solid transparent;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}
+.app-div {
+    //float: left;
+    display: inline-block;
+    width: 180px;
+    height: 150px;
+    vertical-align: top;
+    *display: inline;
+    text-align: center;
+    zoom: 1
+}
+.stretch {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0
+}
+
+#index-main.fade {
+    -webkit-opacity: 0.25;
+    -moz-opacity: 0.25;
+    opacity: 0;
+}
+
+
