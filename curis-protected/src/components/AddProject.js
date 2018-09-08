@@ -201,18 +201,18 @@ class AddProject extends Component {
                                         </FormControl> : ""
                                 }
                                 <FormControlLabel
-                                    control={<Checkbox name="quarter1" checked={this.state.quarter1} onChange={this.handleChecked} value="2018-2019 Winter" />}
+                                    control={<Checkbox name="year_quarter_1" checked={this.state.year_quarter_1} onChange={this.handleChecked} value="2018-2019 Winter" />}
                                     label="2018-2019 Winter"
                                     />
                                 {
-                                    this.state.quarter1 ?
+                                    this.state.year_quarter_1 ?
                                         <FormControl style={{marginLeft: 50}}>
                                             <InputLabel>Compensation Type</InputLabel>
                                             <Select
                                                 style={{width: 300}}
-                                                value={this.state.compensation1}
+                                                value={this.state.compensation_type_1}
                                                 onChange={this.handleChange}
-                                                inputProps={{name: 'compensation1', id: 'compensation1'}}>
+                                                inputProps={{name: 'compensation_type_1', id: 'compensation_type_1'}}>
 
                                                 <MenuItem value="Academic Credit">Academic Credit</MenuItem>
                                                 <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
@@ -220,18 +220,18 @@ class AddProject extends Component {
                                         </FormControl> : ""
                                 }
                                 <FormControlLabel
-                                    control={<Checkbox name="quarter2" checked={this.state.quarter2} onChange={this.handleChecked} value="2018-2019 Spring" />}
+                                    control={<Checkbox name="year_quarter_2" checked={this.state.year_quarter_2} onChange={this.handleChecked} value="2018-2019 Spring" />}
                                     label="2018-2019 Spring"
                                     />
                                 {
-                                    this.state.quarter2 ?
+                                    this.state.year_quarter_2 ?
                                         <FormControl style={{marginLeft: 50}}>
                                             <InputLabel>Compensation Type</InputLabel>
                                             <Select
                                                 style={{width: 300}}
-                                                value={this.state.compensation2}
+                                                value={this.state.compensation_type_2}
                                                 onChange={this.handleChange}
-                                                inputProps={{name: 'compensation2', id: 'compensation2'}}>
+                                                inputProps={{name: 'compensation_type_2', id: 'compensation_type_2'}}>
 
                                                 <MenuItem value="Academic Credit">Academic Credit</MenuItem>
                                                 <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
@@ -239,18 +239,18 @@ class AddProject extends Component {
                                         </FormControl> : ""
                                 }
                                 <FormControlLabel
-                                    control={<Checkbox name="quarter3" checked={this.state.quarter3} onChange={this.handleChecked} value="2018-2019 Summer" />}
+                                    control={<Checkbox name="year_quarter_3" checked={this.state.year_quarter_3} onChange={this.handleChecked} value="2018-2019 Summer" />}
                                     label="2018-2019 Summer"
                                     />
                                 {
-                                    this.state.quarter3 ?
+                                    this.state.year_quarter_3 ?
                                         <FormControl style={{marginLeft: 50}}>
                                             <InputLabel>Compensation Type</InputLabel>
                                             <Select
                                                 style={{width: 300}}
-                                                value={this.state.compensation3}
+                                                value={this.state.compensation_type_3}
                                                 onChange={this.handleChange}
-                                                inputProps={{name: 'compensation3', id: 'compensation3'}}>
+                                                inputProps={{name: 'compensation_type_3', id: 'compensation_type_3'}}>
 
                                                 <MenuItem value="Academic Credit">Academic Credit</MenuItem>
                                                 <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
