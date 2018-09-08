@@ -12,7 +12,8 @@ const styles = {
         backgroundColor: '#b1040e'
     },
     flex: {
-        flexGrow: 1
+        flexGrow: 1,
+        'cursor': 'pointer'
     }
 };
 

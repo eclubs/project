@@ -16,9 +16,9 @@ class MyProjects extends Component {
     };
 
     componentDidMount() {
-        /*fetch('/protected/index.php/Csresearch/get_all_projects')
+        fetch('/protected/index.php/Csresearch/get_all_projects')
          .then(response => response.json())
-         .then(data => this.setState({projects: data.projects}));*/
+         .then(data => this.setState({projects: data.projects}));
     }
 
     render() {

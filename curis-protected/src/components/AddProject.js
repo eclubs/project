@@ -17,6 +17,7 @@ class AddProject extends Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChecked = this.handleChecked.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
     }
@@ -26,7 +27,14 @@ class AddProject extends Component {
         researchfield: '',
         secondfield: '',
         thirdfield: '',
-        quarter: '',
+        year_quarter_0: false,
+        year_quarter_1: false,
+        year_quarter_2: false,
+        year_quarter_3: false,
+        compensation_type_0: '',
+        compensation_type_1: '',
+        compensation_type_2: '',
+        compensation_type_3: '',
         url: '',
         description: '',
         background: '',
@@ -60,8 +68,10 @@ class AddProject extends Component {
         this.setState({[event.target.name]: event.target.value});
     };
 
-    handleChecked = name => event => {
-        this.setState({ [name]: event.target.checked });
+    handleChecked = (event, checked) => {
+        console.log(event.target.name);
+        console.log(event.target);
+        this.setState({[event.target.name]: event.target.checked});
     };
 
     handleSubmit(event) {
@@ -87,170 +97,227 @@ class AddProject extends Component {
     render() {
         return (
             <div className="add-project-div">
-            <Paper className="add-project-paper">
+                <Paper className="add-project-paper">
 
-                <form onSubmit={this.handleSubmit} className="add-project-form">
-                    <div>
-                        <TextField
-                            label="Project Title"
-                            id="title"
-                            onChange={this.handleChange}
-                            inputProps={{name: 'title', id: 'title'}}
-                            required
-                            style={{width: 600}}/>
-                    </div>
-                    <br/>
-
-                    <div>
-                        <FormControl required={true}>
-                            <InputLabel htmlFor="researchfield">Field of Research</InputLabel>
-                            <Select
-                                style={{width: 300}}
-                                value={this.state.researchfield}
+                    <form onSubmit={this.handleSubmit} className="add-project-form">
+                        <div>
+                            <TextField
+                                label="Project Title"
+                                id="title"
                                 onChange={this.handleChange}
-                                inputProps={{name: 'researchfield', id: 'researchfield'}}>
-                                {
-                                    this.research_fields.map(field => {
-                                        return (
-                                            <MenuItem value={field}>{field}</MenuItem>
-                                        );
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
-                    </div>
-                    <br/>
+                                inputProps={{name: 'title', id: 'title'}}
+                                required
+                                style={{width: 800}}/>
+                        </div>
+                        <br/>
 
-                    <div>
-                        <FormControl>
-                            <InputLabel>Field of Research (2nd)</InputLabel>
-                            <Select
-                                style={{width: 300}}
-                                value={this.state.secondfield}
+                        <div>
+                            <FormControl required={true}>
+                                <InputLabel htmlFor="researchfield">Field of Research</InputLabel>
+                                <Select
+                                    style={{width: 280}}
+                                    value={this.state.researchfield}
+                                    onChange={this.handleChange}
+                                    inputProps={{name: 'researchfield', id: 'researchfield'}}>
+                                    {
+                                        this.research_fields.map(field => {
+                                            return (
+                                                <MenuItem value={field}>{field}</MenuItem>
+                                            );
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+
+                            <FormControl style={{marginLeft: 50}}>
+                                <InputLabel>Field of Research (2nd)</InputLabel>
+                                <Select
+                                    style={{width: 280}}
+                                    value={this.state.secondfield}
+                                    onChange={this.handleChange}
+                                    inputProps={{name: 'secondfield', id: 'secondfield'}}>
+                                    {
+                                        this.research_fields.map(field => {
+                                            return (
+                                                <MenuItem value={field}>{field}</MenuItem>
+                                            );
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+
+
+                            <FormControl style={{marginLeft: 50}}>
+                                <InputLabel>Field of Research (3rd)</InputLabel>
+                                <Select
+                                    style={{width: 280}}
+                                    value={this.state.thirdfield}
+                                    onChange={this.handleChange}
+                                    inputProps={{name: 'thirdfield', id: 'thirdfield'}}>
+                                    {
+                                        this.research_fields.map(field => {
+                                            return (
+                                                <MenuItem value={field}>{field}</MenuItem>
+                                            );
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <br/>
+
+                        <div>
+                            <TextField
+                                label="Student Capacity"
+                                id="capacity"
                                 onChange={this.handleChange}
-                                inputProps={{name: 'secondfield', id: 'secondfield'}}>
-                                {
-                                    this.research_fields.map(field => {
-                                        return (
-                                            <MenuItem value={field}>{field}</MenuItem>
-                                        );
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
-                    </div>
-                    <br/>
+                                inputProps={{name: 'capacity', id: 'capacity'}}
+                                required
+                                type="number"/>
+                        </div>
+                        <br/>
+                        <br/>
 
-                    <div>
-                        <FormControl>
-                            <InputLabel>Field of Research (3rd)</InputLabel>
-                            <Select
-                                style={{width: 300}}
-                                value={this.state.thirdfield}
+                        <div>
+                            <FormLabel component="legend" required>School Quarter</FormLabel>
+                            <FormGroup>
+                                <FormControlLabel
+                                    control={<Checkbox name="year_quarter_0" checked={this.state.year_quarter_0} onChange={this.handleChecked} value="2018-2019 Autumn" />}
+                                    label="2018-2019 Autumn"
+                                    />
+                                {
+                                    this.state.year_quarter_0 ?
+                                        <FormControl style={{marginLeft: 50}}>
+                                            <InputLabel>Compensation Type</InputLabel>
+                                            <Select
+                                                style={{width: 300}}
+                                                value={this.state.compensation_type_0}
+                                                onChange={this.handleChange}
+                                                inputProps={{name: 'compensation_type_0', id: 'compensation_type_0'}}>
+
+                                                <MenuItem value="Academic Credit">Academic Credit</MenuItem>
+                                                <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
+                                            </Select>
+                                        </FormControl> : ""
+                                }
+                                <FormControlLabel
+                                    control={<Checkbox name="quarter1" checked={this.state.quarter1} onChange={this.handleChecked} value="2018-2019 Winter" />}
+                                    label="2018-2019 Winter"
+                                    />
+                                {
+                                    this.state.quarter1 ?
+                                        <FormControl style={{marginLeft: 50}}>
+                                            <InputLabel>Compensation Type</InputLabel>
+                                            <Select
+                                                style={{width: 300}}
+                                                value={this.state.compensation1}
+                                                onChange={this.handleChange}
+                                                inputProps={{name: 'compensation1', id: 'compensation1'}}>
+
+                                                <MenuItem value="Academic Credit">Academic Credit</MenuItem>
+                                                <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
+                                            </Select>
+                                        </FormControl> : ""
+                                }
+                                <FormControlLabel
+                                    control={<Checkbox name="quarter2" checked={this.state.quarter2} onChange={this.handleChecked} value="2018-2019 Spring" />}
+                                    label="2018-2019 Spring"
+                                    />
+                                {
+                                    this.state.quarter2 ?
+                                        <FormControl style={{marginLeft: 50}}>
+                                            <InputLabel>Compensation Type</InputLabel>
+                                            <Select
+                                                style={{width: 300}}
+                                                value={this.state.compensation2}
+                                                onChange={this.handleChange}
+                                                inputProps={{name: 'compensation2', id: 'compensation2'}}>
+
+                                                <MenuItem value="Academic Credit">Academic Credit</MenuItem>
+                                                <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
+                                            </Select>
+                                        </FormControl> : ""
+                                }
+                                <FormControlLabel
+                                    control={<Checkbox name="quarter3" checked={this.state.quarter3} onChange={this.handleChecked} value="2018-2019 Summer" />}
+                                    label="2018-2019 Summer"
+                                    />
+                                {
+                                    this.state.quarter3 ?
+                                        <FormControl style={{marginLeft: 50}}>
+                                            <InputLabel>Compensation Type</InputLabel>
+                                            <Select
+                                                style={{width: 300}}
+                                                value={this.state.compensation3}
+                                                onChange={this.handleChange}
+                                                inputProps={{name: 'compensation3', id: 'compensation3'}}>
+
+                                                <MenuItem value="Academic Credit">Academic Credit</MenuItem>
+                                                <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
+                                            </Select>
+                                        </FormControl> : ""
+                                }
+                            </FormGroup>
+                        </div>
+
+                        <div>
+                            <TextField
+                                label="Project URL"
+                                id="url"
                                 onChange={this.handleChange}
-                                inputProps={{name: 'thirdfield', id: 'thirdfield'}}>
-                                {
-                                    this.research_fields.map(field => {
-                                        return (
-                                            <MenuItem value={field}>{field}</MenuItem>
-                                        );
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
-                    </div>
-                    <br/><br/>
+                                inputProps={{name: 'url', id: 'url'}}
+                                style={{width: 800}}/>
+                        </div>
+                        <br/>
 
-                    <div>
-                        <FormLabel component="legend">School Quarter</FormLabel>
-                        <FormGroup>
-                            <FormControlLabel
-                                control={<Checkbox checked={this.state.quarter == "2018-2019 Autumn"} onChange={this.handleChecked} value="2018-2019 Autumn" />}
-                                label="2018-2019 Autumn"
-                                />
-                            <FormControlLabel
-                                control={<Checkbox checked={this.state.quarter == "2018-2019 Winter"} onChange={this.handleChecked} value="2018-2019 Winter" />}
-                                label="2018-2019 Winter"
-                                />
-                            <FormControlLabel
-                                control={<Checkbox checked={this.state.quarter == "2018-2019 Spring"} onChange={this.handleChecked} value="2018-2019 Spring" />}
-                                label="2018-2019 Spring"
-                                />
-                            <FormControlLabel
-                                control={<Checkbox checked={this.state.quarter == "2018-2019 Summer"} onChange={this.handleChecked} value="2018-2019 Summer" />}
-                                label="2018-2019 Summer"
-                                />
-                        </FormGroup>
-                    </div>
+                        <div>
+                            <TextField
+                                label="Description"
+                                id="description"
+                                onChange={this.handleChange}
+                                inputProps={{name: 'description', id: 'description'}}
+                                required
+                                multiline={true}
+                                rows={10}
+                                style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
+                        </div>
+                        <br/>
 
-                    <div>
-                        <TextField
-                            label="Project URL"
-                            id="url"
-                            onChange={this.handleChange}
-                            inputProps={{name: 'url', id: 'url'}}
-                            style={{width: 600}}/>
-                    </div>
-                    <br/>
+                        <div>
+                            <TextField
+                                label="Recommended Background"
+                                id="background"
+                                onChange={this.handleChange}
+                                inputProps={{name: 'background', id: 'background'}}
+                                required
+                                multiline={true}
+                                rows={6}
+                                style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
+                        </div>
+                        <br/>
 
-                    <div>
-                        <TextField
-                            label="Description"
-                            id="description"
-                            onChange={this.handleChange}
-                            inputProps={{name: 'description', id: 'description'}}
-                            required
-                            multiline={true}
-                            rows={10}
-                            style={{width: 600}}/>
-                    </div>
-                    <br/>
+                        <div>
+                            <TextField
+                                label="Prerequisite / Preparation"
+                                id="prerequisite"
+                                onChange={this.handleChange}
+                                inputProps={{name: 'prerequisite', id: 'prerequisite'}}
+                                required
+                                multiline={true}
+                                rows={6}
+                                style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
+                        </div>
 
-                    <div>
-                        <TextField
-                            label="Recommended Background"
-                            id="background"
-                            onChange={this.handleChange}
-                            inputProps={{name: 'background', id: 'background'}}
-                            required
-                            multiline={true}
-                            rows={6}
-                            style={{width: 600}}/>
-                    </div>
-                    <br/>
+                        <br/><br/>
 
-                    <div>
-                        <TextField
-                            label="Student Capacity"
-                            id="capacity"
-                            onChange={this.handleChange}
-                            inputProps={{name: 'capacity', id: 'capacity'}}
-                            required
-                            type="number"/>
-                    </div>
-                    <br/>
-
-                    <div>
-                        <TextField
-                            label="Prerequisite / Preparation"
-                            id="prerequisite"
-                            onChange={this.handleChange}
-                            inputProps={{name: 'prerequisite', id: 'prerequisite'}}
-                            required
-                            multiline={true}
-                            rows={6}
-                            style={{width: 600}}/>
-                    </div>
-
-                    <br/><br/>
-
-                    <div>
-                        <Button variant="contained" color="primary" type="submit">Submit</Button>
-                        &nbsp;&nbsp;&nbsp;
-                        <Button variant="contained" color="primary" type="button" onClick={this.handleReset}>Clear Values</Button>
-                    </div>
-                </form>
-            </Paper>
+                        <div>
+                            <Button variant="contained" color="primary" type="submit">Submit</Button>
+                            &nbsp;&nbsp;&nbsp;
+                            <Button variant="contained" color="primary" type="button" onClick={this.handleReset}>Clear
+                                Values</Button>
+                        </div>
+                    </form>
+                </Paper>
             </div>
         );
     }

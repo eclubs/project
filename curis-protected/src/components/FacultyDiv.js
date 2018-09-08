@@ -12,12 +12,7 @@ import './components.css'
 
 class FacultyDiv extends Component {
     state = {
-        tab: 0,
-        styles: {
-            appBar: {
-                backgroundColor: '#b1040e'
-            }
-        }
+        tab: 0
     };
 
     handleTabClick = (event, value) => {
@@ -27,8 +22,8 @@ class FacultyDiv extends Component {
     render() {
         return (
             <div className="faculty-div-paper">
-                <AppBar position="static" color="default" className={this.state.styles.appBar}>
-                    <Tabs value={this.state.tab} onChange={this.handleTabClick} className={this.state.styles.appBar}>
+                <AppBar position="static" color="default">
+                    <Tabs value={this.state.tab} onChange={this.handleTabClick}>
                         <Tab label="My Projects" />
                         <Tab label="+New Project" />
                         <Tab label="Applications" />

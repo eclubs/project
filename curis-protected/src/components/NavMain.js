@@ -20,14 +20,14 @@ class NavMain extends Component {
                         <NavMainCard
                             id="academic_year_research"
                             text="Academic Year Research"
-                            image="static/images/green_google.png"
+                            image="static/images/orange_google.png"
                             pageHandler={this.props.pageHandler}/>
                     </Grid>
                     <Grid item>
                         <NavMainCard
                             id="curis"
                             text="CURIS"
-                            image="static/images/orange_google.png"
+                            image="static/images/green_google.png"
                             pageHandler={this.props.pageHandler}/>
                     </Grid>
                     <Grid item>

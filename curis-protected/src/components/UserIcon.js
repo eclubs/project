@@ -10,9 +10,9 @@ class UserIcon extends React.Component {
     };
 
     componentDidMount() {
-        /*fetch('/protected/index.php/Csresearch/current_user')
+        fetch('/protected/index.php/Csresearch/current_user')
             .then(response => response.json())
-            .then(data => this.setState({user: data.user}));*/
+            .then(data => this.setState({user: data.user}));
     }
 
     render() {
