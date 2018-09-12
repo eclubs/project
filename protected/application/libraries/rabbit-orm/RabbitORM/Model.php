@@ -72,7 +72,10 @@ class Model {
 	private function translateDataToDatabase($data) {
 		$translatedData = array();
 		foreach($data as $key => $value) {
-			$translatedData[$this->propertiesDefinition[$key]] = $value;
+
+			if (isset($this->propertiesDefinition[$key])) {
+				$translatedData[$this->propertiesDefinition[$key]] = $value;
+			}
 		}
 		return $translatedData;
 	}
@@ -387,10 +390,19 @@ class Model {
 				$reflectionProperty->setValue($this, $value);
 			}
 		} else {
-			$this->data[$field] = $value;
-			$reflectionProperty = $reflectionClass->getProperty($field);
-			$reflectionProperty->setAccessible(true);
-			$reflectionProperty->setValue($this, $value);
+			try {
+
+				$this->data[$field] = $value;
+				$reflectionProperty = $reflectionClass->getProperty($field);
+				$reflectionProperty->setAccessible(true);
+				$reflectionProperty->setValue($this, $value);
+			}
+			catch (\ReflectionException $re) {
+				// ignore
+			}
+			catch (\Exception $e) {
+				// ignore
+			}
 		}
 	}
 

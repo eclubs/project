@@ -15,26 +15,26 @@ class NavMain extends Component {
                 <Grid container direction="row"
                       justify="center"
                       alignItems="flex-start"
-                      spacing={24} style={{padding: 64}}>
+                      spacing={24} style={{padding: 64, 'margin-top': '64px'}}>
                     <Grid item>
                         <NavMainCard
                             id="academic_year_research"
                             text="Academic Year Research"
-                            image="static/images/orange_google.png"
+                            image="static/images/orange_google_cloud.png"
                             pageHandler={this.props.pageHandler}/>
                     </Grid>
                     <Grid item>
                         <NavMainCard
                             id="curis"
                             text="CURIS"
-                            image="static/images/green_google.png"
+                            image="static/images/green_google_cloud.png"
                             pageHandler={this.props.pageHandler}/>
                     </Grid>
                     <Grid item>
                         <NavMainCard
                             id="projects"
                             text="Post Projects"
-                            image="static/images/blue_google.png"
+                            image="static/images/blue_google_cloud.png"
                             pageHandler={this.props.pageHandler}/>
                     </Grid>
 

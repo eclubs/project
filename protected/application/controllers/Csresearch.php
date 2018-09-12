@@ -115,8 +115,19 @@ class Csresearch extends CI_Controller
     public function current_user()
     {
         $result['success'] = true;
-        $result['user']['id'] = $this->current_user->sunetid;
-        $result['user']['displayName'] = $this->current_user->name;
+        $result['user']['id'] = $this->current_user->id;
+        $result['user']['name'] = $this->current_user->name;
+        $result['user']['sunetid'] = $this->current_user->sunetid;
+        $result['user']['suid'] = $this->current_user->suid;
+        $result['user']['type'] = $this->current_user->type;
+        $result['user']['email'] = $this->current_user->email;
+        $result['user']['webpage'] = $this->current_user->webpage;
+        $result['user']['interestarea'] = $this->current_user->interestarea;
+        $result['user']['major'] = $this->current_user->major;
+        $result['user']['gpa'] = $this->current_user->gpa;
+        $result['user']['year'] = $this->current_user->year;
+        $result['user']['admin'] = $this->current_user->admin;
+
         $this->output->set_content_type('application/json')->set_output(json_encode($result, JSON_NUMERIC_CHECK));
     }
 
@@ -197,6 +208,7 @@ class Csresearch extends CI_Controller
             $project->year = $year_quarter[0];
             $project->term = $year_quarter[1];
             $project->compensation_type = $_POST['compensation_type_0'];
+            $project->prof_id = $this->current_user->id;
             $status = $status && $project->save();
         }
 
@@ -209,6 +221,7 @@ class Csresearch extends CI_Controller
             $project->year = $year_quarter[0];
             $project->term = $year_quarter[1];
             $project->compensation_type = $_POST['compensation_type_1'];
+            $project->prof_id = $this->current_user->id;
             $status = $status && $project->save();
         }
 
@@ -221,6 +234,7 @@ class Csresearch extends CI_Controller
             $project->year = $year_quarter[0];
             $project->term = $year_quarter[1];
             $project->compensation_type = $_POST['compensation_type_2'];
+            $project->prof_id = $this->current_user->id;
             $status = $status && $project->save();
         }
 
@@ -233,10 +247,11 @@ class Csresearch extends CI_Controller
             $project->year = $year_quarter[0];
             $project->term = $year_quarter[1];
             $project->compensation_type = $_POST['compensation_type_3'];
+            $project->prof_id = $this->current_user->id;
             $status = $status && $project->save();
         }
 
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, $this->db->error());
     }
 
     public function update_project()

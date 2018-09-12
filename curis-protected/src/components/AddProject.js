@@ -75,7 +75,6 @@ class AddProject extends Component {
     };
 
     handleSubmit(event) {
-        //alert('submit!');
         //console.log(this.state);
         event.preventDefault();
         //const {title, researchfield, secondfield, thirdfield} = this.state;
@@ -83,15 +82,33 @@ class AddProject extends Component {
         const form = event.target;
         const data = new FormData(form);
 
-        fetch('/protected/index.php/Csresearch/current_user', {
+        fetch('/protected/index.php/Csresearch/add_project', {
             method: 'POST',
             body: data
         });
     }
 
     handleReset(event) {
-        alert('reset!');
         event.preventDefault();
+        this.setState({
+            title: '',
+            researchfield: '',
+            secondfield: '',
+            thirdfield: '',
+            year_quarter_0: false,
+            year_quarter_1: false,
+            year_quarter_2: false,
+            year_quarter_3: false,
+            compensation_type_0: '',
+            compensation_type_1: '',
+            compensation_type_2: '',
+            compensation_type_3: '',
+            url: '',
+            description: '',
+            background: '',
+            capacity: 0,
+            prerequisite: ''
+        });
     }
 
     render() {
@@ -184,6 +201,7 @@ class AddProject extends Component {
                                 <FormControlLabel
                                     control={<Checkbox name="year_quarter_0" checked={this.state.year_quarter_0} onChange={this.handleChecked} value="2018-2019 Autumn" />}
                                     label="2018-2019 Autumn"
+                                    style={{width: 250}}
                                     />
                                 {
                                     this.state.year_quarter_0 ?
@@ -203,6 +221,7 @@ class AddProject extends Component {
                                 <FormControlLabel
                                     control={<Checkbox name="year_quarter_1" checked={this.state.year_quarter_1} onChange={this.handleChecked} value="2018-2019 Winter" />}
                                     label="2018-2019 Winter"
+                                    style={{width: 250}}
                                     />
                                 {
                                     this.state.year_quarter_1 ?
@@ -222,6 +241,7 @@ class AddProject extends Component {
                                 <FormControlLabel
                                     control={<Checkbox name="year_quarter_2" checked={this.state.year_quarter_2} onChange={this.handleChecked} value="2018-2019 Spring" />}
                                     label="2018-2019 Spring"
+                                    style={{width: 250}}
                                     />
                                 {
                                     this.state.year_quarter_2 ?
@@ -241,6 +261,7 @@ class AddProject extends Component {
                                 <FormControlLabel
                                     control={<Checkbox name="year_quarter_3" checked={this.state.year_quarter_3} onChange={this.handleChecked} value="2018-2019 Summer" />}
                                     label="2018-2019 Summer"
+                                    style={{width: 250}}
                                     />
                                 {
                                     this.state.year_quarter_3 ?
@@ -291,7 +312,7 @@ class AddProject extends Component {
                                 inputProps={{name: 'background', id: 'background'}}
                                 required
                                 multiline={true}
-                                rows={6}
+                                rows={10}
                                 style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
                         </div>
                         <br/>
@@ -304,7 +325,7 @@ class AddProject extends Component {
                                 inputProps={{name: 'prerequisite', id: 'prerequisite'}}
                                 required
                                 multiline={true}
-                                rows={6}
+                                rows={10}
                                 style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
                         </div>
 

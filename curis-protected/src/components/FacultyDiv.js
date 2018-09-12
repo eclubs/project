@@ -21,8 +21,8 @@ class FacultyDiv extends Component {
 
     render() {
         return (
-            <div className="faculty-div-paper">
-                <AppBar position="static" color="default">
+            <div className="main-working-div-paper">
+                <AppBar position="static" style={{'background-color': '#5770EA'}}>
                     <Tabs value={this.state.tab} onChange={this.handleTabClick}>
                         <Tab label="My Projects" />
                         <Tab label="+New Project" />

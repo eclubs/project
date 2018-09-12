@@ -14,6 +14,32 @@ class User extends RabbitORM\Model {
 	private $sunetid;
 	const sunetidDefinition = '{"name": "sunetid", "column": "sunetid"}';
 
+    private $suid;
+    const suidDefinition = '{"name": "suid", "column": "suid"}';
+
+    private $type;
+    const typeDefinition = '{"name": "type", "column": "type"}';
+
+    private $email;
+    const emailDefinition = '{"name": "email", "column": "email"}';
+
+    private $webpage;
+    const webpageDefinition = '{"name": "webpage", "column": "webpage"}';
+
+    private $admin;
+    const adminDefinition = '{"name": "admin", "column": "admin"}';
+
+    private $interestarea;
+    const interestareaDefinition = '{"name": "interestarea", "column": "interestarea"}';
+
+    private $major;
+    const majorDefinition = '{"name": "major", "column": "major"}';
+
+    private $gpa;
+    const gpaDefinition =  '{"name": "gpa", "column": "gpa"}';
+
+    private $year;
+    const yearDefinition =  '{"name": "year", "column": "year"}';
 	/*public getIdUser() {
     }*/
 
