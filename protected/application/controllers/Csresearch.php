@@ -442,9 +442,8 @@ class Csresearch extends CI_Controller
 
     public function get_dyn_page($target_view)
     {
-        $dyn_page = new Dyn_page();
-        $dyn_page->where('view', $target_view)->get();
-        echo $dyn_page->html;
+        $page = Dyn_page::where('view', $target_view)->first();
+        echo $page->html;
     }
 
     public function set_dyn_page($target_view)

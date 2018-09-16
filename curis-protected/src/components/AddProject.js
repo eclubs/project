@@ -123,6 +123,7 @@ class AddProject extends Component {
                                 id="title"
                                 onChange={this.handleChange}
                                 inputProps={{name: 'title', id: 'title'}}
+                                value={this.state.title}
                                 required
                                 style={{width: 800}}/>
                         </div>
@@ -300,6 +301,7 @@ class AddProject extends Component {
                                 required
                                 multiline={true}
                                 rows={10}
+                                value={this.state.description}
                                 style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
                         </div>
                         <br/>
@@ -313,6 +315,7 @@ class AddProject extends Component {
                                 required
                                 multiline={true}
                                 rows={10}
+                                value={this.state.background}
                                 style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
                         </div>
                         <br/>
@@ -326,6 +329,7 @@ class AddProject extends Component {
                                 required
                                 multiline={true}
                                 rows={10}
+                                value={this.state.prerequisite}
                                 style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
                         </div>
 
