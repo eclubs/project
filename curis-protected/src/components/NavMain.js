@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 import NavMainCard from './NavMainCard'
 import './components.css'
 
 class NavMain extends Component {
-    constructor(props) {
-        super(props);
-    }
+
+    gotoAdmin = () => {
+        window.location.href = '/protected/index.php/Csresearch/admin';
+    };
 
     render() {
         return(
@@ -37,7 +37,13 @@ class NavMain extends Component {
                             image="static/images/blue_google_cloud.png"
                             pageHandler={this.props.pageHandler}/>
                     </Grid>
-
+                    <Grid item>
+                        <NavMainCard
+                            id="admin"
+                            text="Admin"
+                            image="static/images/yellow_google_cloud.png"
+                            pageHandler={this.gotoAdmin}/>
+                    </Grid>
                 </Grid>
             </div>
         )

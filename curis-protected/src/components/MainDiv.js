@@ -3,6 +3,7 @@ import NavMain from './NavMain'
 import AcademicYearDiv from './AcademicYearDiv'
 import CurisDiv from './CurisDiv'
 import FacultyDiv from './FacultyDiv'
+import AdminDiv from './AdminDiv'
 
 class MainDiv extends React.Component {
     state = {
@@ -13,25 +14,22 @@ class MainDiv extends React.Component {
         this.setState({
             page: pageName
         });
-    }
+    };
 
     render() {
         switch (this.state.page) {
             case 'NavMain':
                 return (<div><NavMain pageHandler={this.pageHandler} /></div>);
-                break;
             case 'academic_year_research':
-                return (<div><AcademicYearDiv pageHandler={this.pageHandler} /></div>);
-                break;
+                return (<AcademicYearDiv pageHandler={this.pageHandler} />);
             case 'curis':
-                return (<div><CurisDiv pageHandler={this.pageHandler} /></div>);
-                break;
+                return (<CurisDiv pageHandler={this.pageHandler} />);
             case 'projects':
-                return (<div><FacultyDiv pageHandler={this.pageHandler} /></div>);
-                break;
+                return (<FacultyDiv pageHandler={this.pageHandler} />);
+            case 'admin':
+                return (<AdminDiv pageHandler={this.pageHandler} />);
             default:
                 return (<div><NavMain pageHandler={this.pageHandler} /></div>);
-                break;
         }
     }
 }

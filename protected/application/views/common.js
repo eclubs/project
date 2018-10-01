@@ -1,5 +1,6 @@
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>', win;
 
+var common_url_base = '/protected/index.php/Csresearch/';
 
 var form_submit_failure_handler = function (form, action) {
   switch (action.failureType) {
@@ -36,11 +37,10 @@ var projects_store = Ext.create('Ext.data.JsonStore', {
     'compensation_type',
     'url',
     'description',
-    'spring_prep',
+    'prerequisite',
     'background',
     'capacity',
     'prof_id',
-    'save',
     'creation_time',
     'professor_name',
     'professor_email'
@@ -48,7 +48,7 @@ var projects_store = Ext.create('Ext.data.JsonStore', {
   autoLoad: true,
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_projects',
+    url: common_url_base + 'get_projects',
     reader: {
       type: 'json',
       root: 'projects',
@@ -70,12 +70,10 @@ var all_projects_store = Ext.create('Ext.data.JsonStore', {
     'compensation_type',
     'url',
     'description',
-    'spring_prep',
+    'prerequisite',
     'background',
     'capacity',
     'prof_id',
-    'save',
-    'full',
     'creation_time',
     'professor_name',
     'professor_email'
@@ -83,7 +81,7 @@ var all_projects_store = Ext.create('Ext.data.JsonStore', {
   //autoLoad: true,
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_all_projects',
+    url: common_url_base + 'get_all_projects',
     reader: {
       type: 'json',
       root: 'projects',
@@ -118,11 +116,11 @@ var projects_grid_column = [
 
 var assistants_store = Ext.create('Ext.data.JsonStore', {
   root: 'assistants',
-  fields: ['id', 'name', 'namelf', 'sunetid', 'type', 'email', 'webpage', 'interestarea', 'major', 'gpa', 'graduating', 'majorwhen', 'coterm', 'year', 'transcript', 'resume', 'matched', 'admin', 'assistantto', 'fac_capacity', 'fac_id', 'assign_time'],
+  fields: ['id', 'name', 'sunetid', 'type', 'email', 'webpage', 'interestarea', 'major', 'gpa', 'graduating', 'majorwhen', 'coterm', 'year', 'transcript', 'resume', 'matched', 'admin', 'assistantto', 'fac_id', 'assign_time'],
   //autoLoad: true,
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_assistants',
+    url: common_url_base + 'get_assistants',
     reader: {
       type: 'json',
       root: 'assistants',
@@ -279,7 +277,7 @@ var faculty_names_store = new Ext.data.ArrayStore({
   autoLoad: true,
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_faculty_names',
+    url: common_url_base + 'get_faculty_names',
     reader: {
       type: 'array'
     }
@@ -291,7 +289,7 @@ var faculty_ids_and_names_store = new Ext.data.ArrayStore({
   autoLoad: true,
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_faculty_ids_and_names',
+    url: common_url_base + 'get_faculty_ids_and_names',
     reader: {
       type: 'array'
     }
@@ -303,7 +301,7 @@ var faculties_for_project_store = new Ext.data.ArrayStore({
   autoLoad: true,
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_professors_for_adding_a_project',
+    url: common_url_base + 'get_professors_for_adding_a_project',
     reader: {
       type: 'array'
     }
@@ -354,7 +352,7 @@ var my_applications_store = new Ext.data.JsonStore({
     'thirdfield',
     'url',
     'description',
-    'spring_prep',
+    'prerequisite',
     'background',
     'capacity',
     'prof_id',
@@ -365,7 +363,7 @@ var my_applications_store = new Ext.data.JsonStore({
   autoLoad: true,
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_my_applications',
+    url: common_url_base + 'get_my_applications',
     reader: {
       type: 'json',
       root: 'applications',
@@ -396,7 +394,7 @@ var applications_store = new Ext.data.JsonStore({
     'thirdfield',
     'url',
     'description',
-    'spring_prep',
+    'prerequisite',
     'background',
     'capacity',
     'prof_id',
@@ -409,8 +407,8 @@ var applications_store = new Ext.data.JsonStore({
   groupField: 'professor_name',
   proxy: {
     type: 'ajax',
-    //url: '/protected/index.php/curis/get_applications',
-    url: '/protected/index.php/curis/success_json/null',
+    //url: common_url_base + 'get_applications',
+    url: common_url_base + 'success_json/null',
     reader: {
       type: 'json',
       root: 'applications',

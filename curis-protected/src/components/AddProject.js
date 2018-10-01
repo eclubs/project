@@ -24,6 +24,8 @@ class AddProject extends Component {
 
     state = {
         title: '',
+        type: '',
+        department: '',
         researchfield: '',
         secondfield: '',
         thirdfield: '',
@@ -41,6 +43,11 @@ class AddProject extends Component {
         capacity: 0,
         prerequisite: ''
     };
+
+    project_types = [
+        "CURIS",
+        "Year Round Research"
+    ];
 
     research_fields = [
         "AI",
@@ -92,6 +99,8 @@ class AddProject extends Component {
         event.preventDefault();
         this.setState({
             title: '',
+            type: '',
+            department: '',
             researchfield: '',
             secondfield: '',
             thirdfield: '',
@@ -127,6 +136,24 @@ class AddProject extends Component {
                                 required
                                 style={{width: 800}}/>
                         </div>
+                        <br/>
+
+                        <FormControl required={true}>
+                            <InputLabel htmlFor="type">Project Type</InputLabel>
+                            <Select
+                                style={{width: 280}}
+                                value={this.state.researchfield}
+                                onChange={this.handleChange}
+                                inputProps={{name: 'researchfield', id: 'researchfield'}}>
+                                {
+                                    this.research_fields.map(field => {
+                                        return (
+                                            <MenuItem value={field}>{field}</MenuItem>
+                                        );
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
                         <br/>
 
                         <div>
@@ -284,7 +311,7 @@ class AddProject extends Component {
 
                         <div>
                             <TextField
-                                label="Project URL"
+                                label="Project URL (Optional)"
                                 id="url"
                                 onChange={this.handleChange}
                                 inputProps={{name: 'url', id: 'url'}}

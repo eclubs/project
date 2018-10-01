@@ -86,7 +86,7 @@ var admin_settings_form = new Ext.form.Panel({
         var form = admin_settings_form.getForm();
         form.submit({
           clientValidation: false,
-          url: '/protected/index.php/curis/update_global_settings',
+          url: common_url_base + 'update_global_settings',
           success: function (form, action) {
             Ext.Msg.alert('Success', 'Global Settings Successfully Updated.');
           },
@@ -99,7 +99,7 @@ var admin_settings_form = new Ext.form.Panel({
     render: function (fp, e) {
       var form = fp.getForm();
       form.load({
-        url: '/protected/index.php/curis/get_global_settings',
+        url: common_url_base + 'get_global_settings',
         //waitMsg: 'Loading...',
         failure: function (form, action) {
           Ext.Msg.alert("Load failed", action.result.errorMessage);
@@ -227,7 +227,7 @@ var admin_projects_grid_columns = [
           var confirmed = Ext.MessageBox.confirm('Confirm', 'Are you sure you want to close this project \"' + title + "\" from applicants?", function (btn) {
             if (btn == 'yes') {
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/close_project',
+                url: common_url_base + 'close_project',
                 params: {
                   id: proj_id
                 },
@@ -261,7 +261,7 @@ var admin_projects_grid_columns = [
           var confirmed = Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reopen this project \"' + title + "\" to applicants?", function (btn) {
             if (btn == 'yes') {
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/reopen_project',
+                url: common_url_base + 'reopen_project',
                 params: {
                   id: proj_id
                 },
@@ -295,7 +295,7 @@ var admin_projects_grid_columns = [
           var confirmed = Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove project \"' + title + "\"?", function (btn) {
             if (btn == 'yes') {
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/remove_project',
+                url: common_url_base + 'remove_project',
                 params: {
                   id: proj_id
                 },
@@ -330,7 +330,7 @@ var admin_project_details_update_btn = new Ext.button.Button({
     if (form.isValid()) {
       form.submit({
         clientValidation: true,
-        url: '/protected/index.php/curis/update_project',
+        url: common_url_base + 'update_project',
         success: function (form, action) {
           Ext.Msg.alert('Success', 'Project Successfully Updated.');
           all_projects_store.load();
@@ -380,7 +380,7 @@ var admin_projects_grid = new Ext.grid.Panel({
           {id: 'url', value: rec.get('url')},
           {id: 'description', value: rec.get('description')},
           {id: 'prof_id', value: rec.get('prof_id')},
-          {id: 'spring_prep', value: rec.get('spring_prep')},
+          {id: 'prerequisite', value: rec.get('prerequisite')},
           {id: 'background', value: rec.get('background')},
           {id: 'capacity', value: rec.get('capacity')}
         ]
@@ -408,7 +408,7 @@ var admin_project_details_form = new Ext.form.Panel({
       xtype: 'textfield',
       name: 'title',
       fieldLabel: 'Project Name',
-      width: 450,
+      width: 600,
       allowBlank: false
     },
     {
@@ -533,7 +533,7 @@ var admin_project_details_form = new Ext.form.Panel({
     },
     {
       xtype: 'textarea',
-      name: 'spring_prep',
+      name: 'prerequisite',
       fieldLabel: 'Prerequisite/Preparation',
       width: 600,
       height: 80,
@@ -629,7 +629,7 @@ var users_store = new Ext.data.JsonStore({
   ],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_users',
+    url: common_url_base + 'get_users',
     reader: {
       type: 'json',
       root: 'users',
@@ -871,7 +871,7 @@ var user_details_form = new Ext.form.Panel({
         var form = user_details_form.getForm();
         form.submit({
           clientValidation: true,
-          url: '/protected/index.php/curis/update_user_details',
+          url: common_url_base + 'update_user_details',
           success: function (form, action) {
             Ext.Msg.alert('Success', 'User Details Successfully Updated.');
             users_store.loadPage(users_store.currentPage);
@@ -934,7 +934,7 @@ var admin_users_grid = new Ext.grid.Panel({
       var id = rec.get('id');
       var form = user_details_form.getForm();
       form.load({
-        url: '/protected/index.php/curis/get_user_details/' + id,
+        url: common_url_base + 'get_user_details/' + id,
         waitMsg: 'Loading...',
         success: function () {
           var transcript_path = form.findField('admin_user_profile_transcript').getValue();
@@ -955,7 +955,7 @@ var admin_users_grid = new Ext.grid.Panel({
           }
 
           Ext.Ajax.request({
-            url: '/protected/index.php/curis/get_assistant_to/' + id,
+            url: common_url_base + 'get_assistant_to/' + id,
             success: function (response, request) {
               var responseObj = Ext.decode(response.responseText);
               assistant_to_field.setValue(responseObj.data);
@@ -1038,7 +1038,7 @@ var applications_grid_column = [
             if (btn == 'yes') {
               grid.setLoading(true);
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/prematch_application',
+                url: common_url_base + 'prematch_application',
                 params: {
                   id: application_id
                 },
@@ -1074,7 +1074,7 @@ var applications_grid_column = [
             if (btn == 'yes') {
               grid.setLoading(true);
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/unprematch_application',
+                url: common_url_base + 'unprematch_application',
                 params: {
                   id: application_id
                 },
@@ -1110,7 +1110,7 @@ var applications_grid_column = [
             if (btn == 'yes') {
               grid.setLoading(true);
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/match_application',
+                url: common_url_base + 'match_application',
                 params: {
                   id: application_id
                 },
@@ -1147,7 +1147,7 @@ var applications_grid_column = [
             if (btn == 'yes') {
               grid.setLoading(true);
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/unmatch_application',
+                url: common_url_base + 'unmatch_application',
                 params: {
                   id: application_id
                 },
@@ -1183,7 +1183,7 @@ var applications_grid_column = [
           var confirmed = Ext.MessageBox.confirm('Confirm', 'Are you sure you want to accept ' + student_name + '\'s application to project \"' + title + '"?', function (btn) {
             if (btn == 'yes') {
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/accept_application',
+                url: common_url_base + 'accept_application',
                 params: {
                   id: application_id
                 },
@@ -1216,7 +1216,7 @@ var applications_grid_column = [
           var confirmed = Ext.MessageBox.confirm('Confirm', 'Are you sure you want to decline ' + student_name + '\'s application to project \"' + title + '"?', function (btn) {
             if (btn == 'yes') {
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/decline_application',
+                url: common_url_base + 'decline_application',
                 params: {
                   id: application_id
                 },
@@ -1445,7 +1445,7 @@ var admin_applicant_profile_window = new Ext.window.Window({
 
 var load_applications = function() {
   applications_store.load({
-    url: '/protected/index.php/curis/get_applications',
+    url: common_url_base + 'get_applications',
     params: {
       year: admin_applications_grid_year_filter_combo.getValue(),
       term: admin_applications_grid_term_filter_combo.getValue()
@@ -1513,7 +1513,7 @@ var admin_applications_grid = new Ext.grid.Panel({
       handler: function () {
         var year = admin_applications_grid_year_filter_combo.getValue();
         var term = admin_applications_grid_term_filter_combo.getValue();
-        var url = encodeURI('/protected/index.php/curis/admin_export_applications_to_excel'
+        var url = encodeURI(common_url_base + 'admin_export_applications_to_excel'
                 + '?year='
                 + year
                 + '&term='
@@ -1531,7 +1531,7 @@ var admin_applications_grid = new Ext.grid.Panel({
           if (btn == 'yes') {
             var year = admin_applications_grid_year_filter_combo.getValue();
             var term = admin_applications_grid_term_filter_combo.getValue();
-            var url = '/protected/index.php/curis/match'
+            var url = common_url_base + 'match'
                 + '?year='
                 + year
                 + '&term='
@@ -1562,7 +1562,7 @@ var admin_applications_grid = new Ext.grid.Panel({
           if (btn == 'yes') {
             var year = admin_applications_grid_year_filter_combo.getValue();
             var term = admin_applications_grid_term_filter_combo.getValue();
-            var url = '/protected/index.php/curis/unmatch_all_applications'
+            var url = common_url_base + 'unmatch_all_applications'
                 + '?year='
                 + year
                 + '&term='
@@ -1603,7 +1603,7 @@ var admin_applications_grid = new Ext.grid.Panel({
       form.reset();
       admin_applicant_profile_window.show();
       form.load({
-        url: '/protected/index.php/curis/get_application_details/' + application_id,
+        url: common_url_base + 'get_application_details/' + application_id,
         waitMsg: 'Loading...',
         success: function () {
           var transcript_path = form.findField('admin_applicant_review_profile_transcript').getValue();
@@ -1648,7 +1648,7 @@ var admin_project_uploads_store = Ext.create('Ext.data.JsonStore', {
   ],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_admin_project_uploads',
+    url: common_url_base + 'get_admin_project_uploads',
     reader: {
       type: 'json',
       root: 'uploads',
@@ -1698,7 +1698,7 @@ var admin_project_uploads_grid_column = [
           var confirmed = Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this upload \"' + filename + "\"?", function (btn) {
             if (btn == 'yes') {
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/remove_upload',
+                url: common_url_base + 'remove_upload',
                 params: {
                   id: project_upload_id
                 },
@@ -1763,7 +1763,7 @@ var faculties_and_assistants_grid_column = [
               'Are you sure you want to remove assistant \"' + asst_name + "\" from \"" + fac_name +  "\"?", function (btn) {
             if (btn == 'yes') {
               Ext.Ajax.request({
-                url: '/protected/index.php/curis/remove_assistant',
+                url: common_url_base + 'remove_assistant',
                 params: {
                   fac_id: fac_id,
                   asst_id: asst_id
@@ -1801,7 +1801,7 @@ var faculties_and_assistants_store = new Ext.data.JsonStore({
   ],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_faculties_and_assistants',
+    url: common_url_base + 'get_faculties_and_assistants',
     reader: {
       type: 'json',
       root: 'assistants'
@@ -1853,7 +1853,7 @@ var admin_add_assistant_form = new Ext.create('Ext.form.Panel', {
         if (form.isValid()) {
           form.submit({
             clientValidation: true,
-            url: '/protected/index.php/curis/admin_add_assistant_to_faculty',
+            url: common_url_base + 'admin_add_assistant_to_faculty',
             success: function (form, action) {
               Ext.MessageBox.alert('Success', 'Assistant added successfully.');
               faculties_and_assistants_store.load();
@@ -1903,10 +1903,12 @@ var faculties_and_assistants_grid = new Ext.grid.Panel({
 
 // ---------------- Pages Panel ------------------
 var set_page_editor_content = function (editor, page_name) {
+  admin_pages_panel.setLoading(true);
   Ext.Ajax.request({
-    url: '/protected/index.php/curis/get_dyn_page/' + page_name,
+    url: common_url_base + 'get_dyn_page/' + page_name,
     success: function (response, request) {
       editor.setValue(response.responseText);
+      admin_pages_panel.setLoading(false);
     },
     failure: function (response, request) {
       Ext.MessageBox.alert('Failure', 'server-side failure with status code ' + response.status);
@@ -1958,7 +1960,7 @@ var admin_pages_panel = new Ext.panel.Panel({
         var page_name = admin_page_names_combo.getValue();
         var page_content = page_editor.getValue();
         Ext.Ajax.request({
-          url: '/protected/index.php/curis/set_dyn_page/' + page_name,
+          url: common_url_base + 'set_dyn_page/' + page_name,
           params: {
             page_content: page_content
           },
@@ -1996,7 +1998,7 @@ var email_templates_store = new Ext.data.JsonStore({
   fields: ['id', 'name', 'message'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_email_templates',
+    url: common_url_base + 'get_email_templates',
     reader: {
       type: 'json',
       root: 'templates'
@@ -2009,7 +2011,7 @@ var email_templates_with_none_store = new Ext.data.JsonStore({
   fields: ['id', 'name', 'message'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_email_templates_with_none',
+    url: common_url_base + 'get_email_templates_with_none',
     reader: {
       type: 'json',
       root: 'templates'
@@ -2067,7 +2069,7 @@ var all_emails_store = Ext.create('Ext.data.JsonStore', {
   fields: ['id', 'name', 'email'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_all_emails',
+    url: common_url_base + 'get_all_emails',
     reader: {
       type: 'json',
       root: 'data',
@@ -2081,7 +2083,7 @@ var faculty_emails_store = Ext.create('Ext.data.JsonStore', {
   fields: ['id', 'name', 'email'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_faculty_emails',
+    url: common_url_base + 'get_faculty_emails',
     reader: {
       type: 'json',
       root: 'data',
@@ -2095,7 +2097,7 @@ var applied_student_emails_store = Ext.create('Ext.data.JsonStore', {
   fields: ['id', 'name', 'email'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_applied_student_emails',
+    url: common_url_base + 'get_applied_student_emails',
     reader: {
       type: 'json',
       root: 'data',
@@ -2109,7 +2111,7 @@ var matched_student_emails_store = Ext.create('Ext.data.JsonStore', {
   fields: ['id', 'name', 'email'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_matched_student_emails',
+    url: common_url_base + 'get_matched_student_emails',
     reader: {
       type: 'json',
       root: 'data',
@@ -2123,7 +2125,7 @@ var unmatched_student_emails_store = Ext.create('Ext.data.JsonStore', {
   fields: ['id', 'name', 'email'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_unmatched_student_emails',
+    url: common_url_base + 'get_unmatched_student_emails',
     reader: {
       type: 'json',
       root: 'data',
@@ -2137,7 +2139,7 @@ var accepted_student_emails_store = Ext.create('Ext.data.JsonStore', {
   fields: ['id', 'name', 'email'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_accepted_student_emails',
+    url: common_url_base + 'get_accepted_student_emails',
     reader: {
       type: 'json',
       root: 'data',
@@ -2151,7 +2153,7 @@ var faculty_and_assistant_who_have_accepted_student_store = Ext.create('Ext.data
   fields: ['id', 'name', 'email'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_faculty_and_assistant_who_have_accepted_student_emails',
+    url: common_url_base + 'get_faculty_and_assistant_who_have_accepted_student_emails',
     reader: {
       type: 'json',
       root: 'data',
@@ -2165,7 +2167,7 @@ var all_assistant_emails_store = Ext.create('Ext.data.JsonStore', {
   fields: ['id', 'name', 'email'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_all_assistant_emails',
+    url: common_url_base + 'get_all_assistant_emails',
     reader: {
       type: 'json',
       root: 'data',
@@ -2179,7 +2181,7 @@ var custom_emails_store = Ext.create('Ext.data.JsonStore', {
   fields: ['id', 'name', 'email'],
   proxy: {
     type: 'ajax',
-    url: '/protected/index.php/curis/get_custom_emails',
+    url: common_url_base + 'get_custom_emails',
     reader: {
       type: 'json',
       root: 'data',
@@ -2252,7 +2254,7 @@ var show_email_confirmation_window = function() {
         var form = admin_email_form_panel.getForm();
         form.submit({
           clientValidation: true,
-          url: '/protected/index.php/curis/send_mail',
+          url: common_url_base + 'send_mail',
           params: {
             recipient_emails: recipient_emails_string
           },
@@ -2556,7 +2558,7 @@ var admin_email_form_panel = Ext.create('Ext.form.Panel', {
                 var template_name = save_email_template_name_combo.getValue();
                 var template_message = email_message_textarea.getValue();
                 Ext.Ajax.request({
-                  url: '/protected/index.php/curis/update_email_template',
+                  url: common_url_base + 'update_email_template',
                   method: 'POST',
                   params: {
                     template_name: template_name,
@@ -2641,7 +2643,7 @@ var admin_email_form_panel = Ext.create('Ext.form.Panel', {
                       if (form.isValid()) {
                         form.submit({
                           clientValidation: false,
-                          url: '/protected/index.php/curis/delete_email_template',
+                          url: common_url_base + 'delete_email_template',
                           success: function (form, action) {
                             Ext.MessageBox.alert('Success', 'Email template successfully removed.');
                             email_templates_with_none_store.load();

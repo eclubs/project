@@ -13,7 +13,7 @@ const styles = {
 };
 
 function enter() {
-    window.location.href = 'https://curis-dev.cs.stanford.edu/protected/index.html';
+    window.location.href = '/protected/index.html';
 }
 
 function NavBar(props) {

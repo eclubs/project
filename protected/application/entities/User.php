@@ -29,6 +29,9 @@ class User extends RabbitORM\Model {
     private $admin;
     const adminDefinition = '{"name": "admin", "column": "admin"}';
 
+    private $cs_faculty;
+    const cs_facultyDefinition = '{"name": "cs_faculty", "column": "cs_faculty"}';
+
     private $interestarea;
     const interestareaDefinition = '{"name": "interestarea", "column": "interestarea"}';
 
@@ -36,13 +39,39 @@ class User extends RabbitORM\Model {
     const majorDefinition = '{"name": "major", "column": "major"}';
 
     private $gpa;
-    const gpaDefinition =  '{"name": "gpa", "column": "gpa"}';
+    const gpaDefinition = '{"name": "gpa", "column": "gpa"}';
 
     private $year;
-    const yearDefinition =  '{"name": "year", "column": "year"}';
-	/*public getIdUser() {
-    }*/
+    const yearDefinition = '{"name": "year", "column": "year"}';
 
+    private $graduating;
+    const graduatingDefinition = '{"name": "graduating", "column": "graduating"}';
+
+    private $majorwhen;
+    const majorwhenDefinition = '{"name": "majorwhen", "column": "majorwhen"}';
+
+    private $coterm;
+    const cotermDefinition = '{"name": "coterm", "column": "coterm"}';
+
+    private $transcript;
+    const transcriptDefinition = '{"name": "transcript", "column": "transcript"}';
+
+    private $resume;
+    const resumeDefinition = '{"name": "resume", "column": "resume"}';
+
+    private $lecturer;
+    const lecturerDefinition = '{"name": "lecturer", "column": "lecturer"}';
+
+    private $creation_time;
+    const creation_timeDefinition =  '{"name": "creation_time", "column": "creation_time"}';
+
+    public function count($field = null) {
+        return $this->newQuery()->count_all();
+    }
+
+    public function json_object() {
+        return json_encode( $this->data );
+    }
 }
 
 /*class User extends CI_Model {

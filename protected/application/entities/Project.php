@@ -8,8 +8,14 @@ class Project extends RabbitORM\Model {
 	private $id;
 	const idDefinition = '{"name": "id", "column": "id", "primaryKey": "true"}';
 
+	private $type;
+	const typeDefinition = '{"name": "type", "column": "type"}';
+
 	private $title;
 	const titleDefinition = '{"name": "title", "column": "title"}';
+
+	private $department;
+	const departmentDefinition = '{"name": "department", "column": "department"}';
 
 	private $researchfield;
 	const researchfieldDefinition = '{"name": "researchfield", "column": "researchfield"}';
@@ -35,6 +41,9 @@ class Project extends RabbitORM\Model {
 	private $description;
 	const descriptionDefinition = '{"name": "description", "column": "description"}';
 
+	private $prof_email;
+	const prof_emailDefinition = '{"name": "prof_email", "column": "prof_email"}';
+
 	private $prerequisite;
 	const prerequisiteDefinition = '{"name": "prerequisite", "column": "prerequisite"}';
 
@@ -46,6 +55,9 @@ class Project extends RabbitORM\Model {
 
 	private $prof_id;
 	const prof_idDefinition = '{"name": "prof_id", "column": "prof_id"}';
+
+	private $creation_time;
+	const creation_timeDefinition = '{"name": "creation_time", "column": "creation_time"}';
 }
 
 

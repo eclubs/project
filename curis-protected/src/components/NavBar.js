@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import Avatar from '@material-ui/core/Avatar'
+import IconButton from '@material-ui/core/IconButton';
+
 import { withStyles } from '@material-ui/core/styles'
 import UserIcon from './UserIcon.js'
 
@@ -27,10 +28,13 @@ function NavBar(props) {
         <div>
             <AppBar position="fixed" className={classes.red}>
                 <Toolbar>
+                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={go_home}>
+                        <img width="32" height="32" src="static/images/home-icon4.png" alt="Home"/>
+                    </IconButton>
                     <Typography variant="title" color="inherit" align="left" className={classes.flex} onClick={go_home}>
                         Stanford CS Research
                     </Typography>
-                    <UserIcon/>
+                    <UserIcon user={props.user}/>
                 </Toolbar>
             </AppBar>
         </div>

@@ -167,7 +167,15 @@ class Model {
 			$builder->where(array($this->primary => $id));
 		}
 		$result = new Result( $this, $builder );
-		return is_array($id) ? $result->rows() : $result->first();
+		//return is_array($id) ? $result->rows() : $result->first();
+		if (is_array($id)) {
+			return $result->rows();
+		}
+		else {
+			$r = $result->first();
+			$r->exists = true;
+			return $r;
+		}
 	}
 
 	protected function pluck($field)
@@ -500,9 +508,9 @@ class Model {
 		if(empty($this->queryBuilder))
 			$this->queryBuilder = $this->newQuery();
 
-		$this->queryBuilder->select($function.'(`'.$field.'`) as aggr');
+		$this->queryBuilder->select(array('aggr' => $function.'(`'.$field.'`)'));
 
-		$result = $this->first();
+		$result = $this->get()->row();
 		return $result->aggr;
 	}
 

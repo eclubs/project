@@ -4,11 +4,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Paper from '@material-ui/core/Paper';
-import FormGroup from '@material-ui/core/FormGroup';
-import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import './components.css'
 
@@ -49,7 +45,8 @@ class StudentProfile extends Component {
 
     handleChange = (event) => {
         //var user = {...this.state.user};
-        var user = Object.assign(this.state.user, user);
+        var user = {};
+        user = Object.assign(this.state.user, user);
         user[event.target.name] = event.target.value;
         this.setState({user});
     };
@@ -64,10 +61,10 @@ class StudentProfile extends Component {
         event.preventDefault();
         const form = event.target;
         const data = new FormData(form);
-        /*fetch('/protected/index.php/Csresearch/add_project', {
+        fetch('/protected/index.php/Csresearch/add_project', {
             method: 'POST',
             body: data
-        });*/
+        });
     }
 
     handleReset(event) {

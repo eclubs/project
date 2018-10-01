@@ -83,7 +83,12 @@ class Result implements Countable, IteratorAggregate {
 
 	function json()
 	{
-		return json_encode( $this->toArray() );
+		if ($this->count() == 1) {
+			return json_encode( $this->first()->getData() );
+		}
+		else {
+			return json_encode( $this->toArray() );
+		}
 	}
 
 	// Implements IteratorAggregate function

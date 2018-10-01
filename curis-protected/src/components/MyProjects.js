@@ -7,9 +7,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 class MyProjects extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     state = {
         projects: []

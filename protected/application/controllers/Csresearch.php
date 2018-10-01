@@ -56,6 +56,16 @@ class Csresearch extends CI_Controller
         $this->load->view('message', $vdata);
     }
 
+    public function admin() {
+        if ($this->current_user->admin) {
+            $this->load->view('admin');
+        }
+        else {
+            $vdata['message'] = "You don't have admin privilege.";
+            $this->load->view('message', $vdata);
+        }
+    }
+
     public function common_js()
     {
         $this->load->view('common.js');
@@ -110,6 +120,10 @@ class Csresearch extends CI_Controller
         } else {
             $this->failure_json($msg);
         }
+    }
+
+    public function check_array_item($arr, $key) {
+        return (array_key_exists($key, $arr) && isset($arr[$key]) && !empty($arr[$key]));
     }
 
     public function current_user()
@@ -268,7 +282,8 @@ class Csresearch extends CI_Controller
             }
         }
         $proj_id = $_POST['id'];
-        $project = new Project($proj_id);
+        //$project = new Project($proj_id);
+        $project = Project::find($proj_id);
 
         // reject term and year update if there are existing applications
         if ($project->term != $_POST['term'] || $project->year != $_POST['year']) {
@@ -284,7 +299,7 @@ class Csresearch extends CI_Controller
             $project->$field = $value;
         }
         $status = $project->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function remove_project()
@@ -310,7 +325,7 @@ class Csresearch extends CI_Controller
 
         $project = new Project($proj_id);
         $status = $project->delete();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function close_project()
@@ -324,7 +339,7 @@ class Csresearch extends CI_Controller
         $project = new Project($proj_id);
         $project->full = 1;
         $status = $project->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function reopen_project()
@@ -338,7 +353,7 @@ class Csresearch extends CI_Controller
         $project = new Project($proj_id);
         $project->full = 0;
         $status = $project->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function add_assistant()
@@ -371,7 +386,7 @@ class Csresearch extends CI_Controller
         $assistant->asst_id = $assistantUser->id;
         $assistant->fac_id = $facUser->id;
         $status = $assistant->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function admin_add_assistant_to_faculty()
@@ -411,7 +426,7 @@ class Csresearch extends CI_Controller
         $assistant->asst_id = $assistantUser->id;
         $assistant->fac_id = $facUser->id;
         $status = $assistant->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function get_assistants()
@@ -437,7 +452,7 @@ class Csresearch extends CI_Controller
         $fac_id = $_POST['fac_id'];
         $asst_id = $_POST['asst_id'];
         $status = $this->db->query("DELETE FROM assistants WHERE fac_id = '$fac_id' AND asst_id = '$asst_id'");
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function get_dyn_page($target_view)
@@ -450,7 +465,7 @@ class Csresearch extends CI_Controller
     {
         $dyn_page = new Dyn_page();
         $status = $dyn_page->where('view', $target_view)->update('html', $_POST['page_content']);
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function get_faculty_names()
@@ -521,7 +536,7 @@ class Csresearch extends CI_Controller
     public function get_global_settings()
     {
         $this->output->set_content_type('application/json')->set_output(
-            "{ \"success\":\"true\", \"data\": " . $this->global_settings->to_json() . "}"
+            "{ \"success\":\"true\", \"data\": " . $this->global_settings->json() . "}"
         );
     }
 
@@ -542,7 +557,7 @@ class Csresearch extends CI_Controller
                 'stud_accept' => $_POST['stud_accept'],
                 'login_link' => $_POST['login_link']));
 
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     private function adjust_upload_file_path_with_safe_extension($path)
@@ -675,7 +690,7 @@ class Csresearch extends CI_Controller
         }
 
         $status = $upload->delete();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function test_app() {
@@ -707,24 +722,25 @@ class Csresearch extends CI_Controller
             $search_name = '';
         }
 
-        $users = new User();
-        $users->order_by($sortBy, $sortDirection);
+        //$users = new User();
+        $queryBuilder = User::order_by($sortBy, $sortDirection);
         if ($sortBy == 'type') {
-            $users->order_by('lecturer', $sortDirection);
+            $queryBuilder->order_by('lecturer', $sortDirection);
         }
 
         if (!empty($search_name)) {
-            $users->ilike('name', $search_name);
+            $queryBuilder->ilike('name', $search_name);
         }
-        $users->get($limit, $start);
+        $users = $queryBuilder->limit($limit, $start)->get();
         if (!empty($search_name)) {
             $totalCount = $users->result_count();
         } else {
-            $totalCount = $users->count();
+
+            $totalCount = (new User())->count();
         }
 
         $this->output->set_content_type('application/json')->set_output(
-            "{ \"success\":true, \"totalCount\":$totalCount, \"users\": " . json_encode($users->all_to_array()) . "}"
+            "{ \"success\":true, \"totalCount\":$totalCount, \"users\": " . $users->json() . "}"
         );
     }
 
@@ -734,10 +750,10 @@ class Csresearch extends CI_Controller
             $this->failure_json('You don\'t have permission to view user details.');
             return;
         }
-        $user = new User();
-        $user->where('id', $id)->get();
+        //$user = new User();
+        $user = User::where('id', $id)->get();
         $this->output->set_content_type('application/json')->set_output(
-            "{ \"success\":true, \"data\": " . $user->to_json() . "}"
+            "{ \"success\":true, \"data\": " . $user->json() . "}"
         );
     }
 
@@ -748,7 +764,7 @@ class Csresearch extends CI_Controller
             return;
         }
         $id = $_POST['id'];
-        $user = new User($id);
+        $user = User::find($id);
         foreach ($_POST as $field => $value) {
             if ($field == "type" && $value == "lecturer") {
                 $user->$field = "faculty";
@@ -759,7 +775,8 @@ class Csresearch extends CI_Controller
             }
         }
         $status = $user->save();
-        $this->status_json($status, $this->db->_error_message());
+        //$this->status_json($status, "");
+        $this->status_json($status, "");
     }
 
     public function get_assistant_to($id)
@@ -799,7 +816,7 @@ class Csresearch extends CI_Controller
         $app->score = $score;
         $app->statement = $statement;
         $status = $app->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function get_my_uploads()
@@ -845,7 +862,7 @@ class Csresearch extends CI_Controller
     public function get_my_applications()
     {
         $applications = array();
-        $query = $this->db->query("SELECT applications.*, projects.title, projects.researchfield, projects.secondfield, projects.thirdfield, projects.url, projects.description, projects.spring_prep, projects.background, projects.capacity, projects.prof_id, projects.creation_time, projects.year, projects.term, users.name AS professor_name, users.email AS professor_email FROM applications, projects, users WHERE applications.user_id='{$this->current_user->id}' AND applications.project_id = projects.id AND projects.prof_id = users.id");
+        $query = $this->db->query("SELECT applications.*, projects.title, projects.researchfield, projects.secondfield, projects.thirdfield, projects.url, projects.description, projects.prerequisite, projects.background, projects.capacity, projects.prof_id, projects.creation_time, projects.year, projects.term, users.name AS professor_name, users.email AS professor_email FROM applications, projects, users WHERE applications.user_id='{$this->current_user->id}' AND applications.project_id = projects.id AND projects.prof_id = users.id");
         foreach ($query->result_array() as $application) {
             $applications[] = $application;
         }
@@ -860,7 +877,7 @@ class Csresearch extends CI_Controller
         $app = new Application($application_id);
         if ($app->user_id == $this->current_user->id) {
             $status = $app->delete();
-            $this->status_json($status, $this->db->_error_message());
+            $this->status_json($status, "");
         } else {
             $this->failure_json('You don\'t have permission to remove this application since you are not the applicant.');
             return;
@@ -957,7 +974,7 @@ class Csresearch extends CI_Controller
         $app = new Application($application_id);
         $app->fac_rating1 = $rating;
         $status = $app->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function decline_application()
@@ -976,7 +993,7 @@ class Csresearch extends CI_Controller
         }
         $app->status = -1;
         $status = $app->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function accept_application()
@@ -999,7 +1016,7 @@ class Csresearch extends CI_Controller
         }
         $app->status = 1;
         $status = $app->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function prematch_application()
@@ -1027,7 +1044,7 @@ class Csresearch extends CI_Controller
 
         $app->prematch = 1;
         $status = $app->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function unprematch_application()
@@ -1040,7 +1057,7 @@ class Csresearch extends CI_Controller
         $app = new Application($application_id);
         $app->prematch = 0;
         $status = $app->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function match_application()
@@ -1053,7 +1070,7 @@ class Csresearch extends CI_Controller
         $app = new Application($application_id);
         $app->match = 1;
         $status = $app->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function unmatch_application()
@@ -1066,7 +1083,7 @@ class Csresearch extends CI_Controller
         $app = new Application($application_id);
         $app->match = 0;
         $status = $app->save();
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function get_faculties_and_assistants()
@@ -1115,7 +1132,7 @@ class Csresearch extends CI_Controller
         $template->message = $template_message;
         $status = $template->save();
 
-        $this->status_json($status, $this->db->_error_message());
+        $this->status_json($status, "");
     }
 
     public function delete_email_template()
@@ -1129,7 +1146,7 @@ class Csresearch extends CI_Controller
         $template->where('name', $template_name)->get();
         if ($template->result_count() > 0) {
             $status = $template->delete();
-            $this->status_json($status, $this->db->_error_message());
+            $this->status_json($status, "");
             return;
         } else {
             $this->failure_json('Email template [' . $template_name . '] not found.');

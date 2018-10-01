@@ -5,6 +5,7 @@
   "homepage": "https://curis-dev.cs.stanford.edu/protected",
   "dependencies": {
     "@material-ui/core": "^1.5.1",
+    "extjs": "^0.1.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.5",

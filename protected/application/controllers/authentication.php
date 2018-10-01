@@ -6,7 +6,7 @@
  */
 
 //user sunetid
-//$sunetid = getenv("REMOTE_USER");
+$sunetid = getenv("REMOTE_USER");
 $sunetid = "llao";
 
 // Warning -- this was not caught before. If you pass a false or empty string to
@@ -58,7 +58,6 @@ if (!$this->current_user->sunetid) {
     //print("sunetid not found");
     $this->current_user->sunetid = $sunetid;
     $this->current_user->name = $name;
-    $this->current_user->namelf = $namelf;
     $this->current_user->email = $email;
     $this->current_user->type = $type;
     $this->current_user->admin = 0;
@@ -67,6 +66,11 @@ if (!$this->current_user->sunetid) {
 else {
     //print("sunetid found");
 }
+
+$login = new Login();
+$login->name = $this->current_user->name;
+$login->sunetid = $this->current_user->sunetid;
+$login->save();
 
 //var_dump($this->current_user);
 
