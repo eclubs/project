@@ -464,7 +464,7 @@ class Csresearch extends CI_Controller
     public function set_dyn_page($target_view)
     {
         $dyn_page = new Dyn_page();
-        $status = $dyn_page->where('view', $target_view)->update('html', $_POST['page_content']);
+        $status = $dyn_page->where('view', $target_view)->update(array('html' => $_POST['page_content']));
         $this->status_json($status, "");
     }
 

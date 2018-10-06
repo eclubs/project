@@ -41,9 +41,6 @@ class Project extends RabbitORM\Model {
 	private $description;
 	const descriptionDefinition = '{"name": "description", "column": "description"}';
 
-	private $prof_email;
-	const prof_emailDefinition = '{"name": "prof_email", "column": "prof_email"}';
-
 	private $prerequisite;
 	const prerequisiteDefinition = '{"name": "prerequisite", "column": "prerequisite"}';
 

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
+import FacultyHome from './FacultyHome'
 import MyProjects from './MyProjects'
 import AddProject from './AddProject'
 import FacultyApplications from './FacultyApplications'
@@ -22,16 +23,18 @@ class FacultyDiv extends Component {
             <div className="main-working-div-paper">
                 <AppBar position="static" style={{'background-color': '#5770EA'}}>
                     <Tabs value={this.state.tab} onChange={this.handleTabClick}>
+                        <Tab label="Home" />
                         <Tab label="My Projects" />
                         <Tab label="+New Project" />
                         <Tab label="Applications" />
                         <Tab label="FAQ" />
                     </Tabs>
                 </AppBar>
-                {this.state.tab === 0 && <MyProjects pageHandler={this.props.pageHandler} />}
-                {this.state.tab === 1 && <AddProject pageHandler={this.props.pageHandler} />}
-                {this.state.tab === 2 && <FacultyApplications pageHandler={this.props.pageHandler} />}
-                {this.state.tab === 3 && <FacultyFaq pageHandler={this.props.pageHandler} />}
+                {this.state.tab === 0 && <FacultyHome pageHandler={this.props.pageHandler} />}
+                {this.state.tab === 1 && <MyProjects pageHandler={this.props.pageHandler} />}
+                {this.state.tab === 2 && <AddProject pageHandler={this.props.pageHandler} />}
+                {this.state.tab === 3 && <FacultyApplications pageHandler={this.props.pageHandler} />}
+                {this.state.tab === 4 && <FacultyFaq pageHandler={this.props.pageHandler} />}
             </div>
         )
     }

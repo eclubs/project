@@ -49,6 +49,11 @@ class AddProject extends Component {
         "Year Round Research"
     ];
 
+    departments = [
+        "CS",
+        "EE"
+    ];
+
     research_fields = [
         "AI",
         "Algorithms",
@@ -138,22 +143,46 @@ class AddProject extends Component {
                         </div>
                         <br/>
 
-                        <FormControl required={true}>
-                            <InputLabel htmlFor="type">Project Type</InputLabel>
-                            <Select
-                                style={{width: 280}}
-                                value={this.state.researchfield}
-                                onChange={this.handleChange}
-                                inputProps={{name: 'researchfield', id: 'researchfield'}}>
-                                {
-                                    this.research_fields.map(field => {
-                                        return (
-                                            <MenuItem value={field}>{field}</MenuItem>
-                                        );
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
+                        <div>
+                            <FormControl required={true}>
+                                <InputLabel htmlFor="type">Project Type</InputLabel>
+                                <Select
+                                    style={{width: 280}}
+                                    value={this.state.type}
+                                    onChange={this.handleChange}
+                                    inputProps={{name: 'type', id: 'type'}}>
+                                    {
+                                        this.project_types.map(field => {
+                                            return (
+                                                <MenuItem value={field}>{field}</MenuItem>
+                                            );
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+
+                            {
+                                this.state.type === "Year Round Research" ?
+                                    <FormControl style={{marginLeft: 50}}>
+                                        <InputLabel htmlFor="type">Department</InputLabel>
+                                        <Select
+                                            style={{width: 280}}
+                                            value={this.state.department}
+                                            onChange={this.handleChange}
+                                            inputProps={{name: 'department', id: 'department'}}>
+                                            {
+                                                this.departments.map(field => {
+                                                    return (
+                                                        <MenuItem value={field}>{field}</MenuItem>
+                                                    );
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                    :
+                                    <span/>
+                            }
+                        </div>
                         <br/>
 
                         <div>

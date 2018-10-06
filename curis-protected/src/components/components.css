@@ -46,7 +46,7 @@ body {
 }
 
 .main-working-div-paper {
-  margin: 75px 20px 20px 20px;
+  margin: 80px 20px 20px 20px;
 }
 
 .add-project-div {
@@ -74,4 +74,9 @@ body {
 .ud_card_media {
   width: 300px;
   height: 300px;
+}
+
+.project_title_cell {
+  font-weight: bold;
+  font-size: 18px;
 }
