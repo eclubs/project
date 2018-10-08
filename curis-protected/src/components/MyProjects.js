@@ -52,6 +52,17 @@ class MyProjects extends Component {
         "Vision"
     ];
 
+    static years = [
+        "2018-2019"
+    ];
+
+    static quarters = [
+        "Autumn",
+        "Winter",
+        "Spring",
+        "Summer"
+    ];
+
     state = {
         projects: {},
         expandedRows : []
@@ -83,8 +94,14 @@ class MyProjects extends Component {
         this.setState({expandedRows : newExpandedRows});
     };
 
-    handleChange = (event) => {
-        //this.setState({[event.target.name]: event.target.value});
+    handleChange = (event, proj_id) => {
+        console.log(proj_id);
+
+        let projs = {...this.state.projects};
+        projs[proj_id][event.target.name] = event.target.value;
+        this.setState({projects: projs});
+
+        console.log(this.state);
     };
 
     handleSubmit(event) {
@@ -116,13 +133,14 @@ class MyProjects extends Component {
                     <TableCell colSpan={4}>
                         <Paper className="add-project-paper">
                             <form onSubmit={this.handleSubmit} className="add-project-form">
+                                <input type='hidden' name="id" value={project.id} />
                                 <div>
                                     <TextField
                                         label="Project Title"
-                                        id="title"
-                                        onChange={this.handleChange}
+                                        id={"title-" + project.id}
+                                        onChange={(e) => this.handleChange(e, project.id)}
                                         inputProps={{name: 'title', id: 'title'}}
-                                        value={project.title}
+                                        value={this.state.projects[project.id].title}
                                         required
                                         style={{width: 800}}/>
                                 </div>
@@ -133,8 +151,8 @@ class MyProjects extends Component {
                                         <InputLabel htmlFor="type">Project Type</InputLabel>
                                         <Select
                                             style={{width: 280}}
-                                            value={project.type}
-                                            onChange={this.handleChange}
+                                            value={this.state.projects[project.id].type}
+                                            onChange={(e) => this.handleChange(e, project.id)}
                                             inputProps={{name: 'type', id: 'type'}}>
                                             {
                                                 this.project_types.map(field => {
@@ -147,13 +165,13 @@ class MyProjects extends Component {
                                     </FormControl>
 
                                     {
-                                        this.state.type === "Year Round Research" ?
+                                        this.state.projects[project.id].type === "Year Round Research" ?
                                             <FormControl style={{marginLeft: 50}}>
                                                 <InputLabel htmlFor="type">Department</InputLabel>
                                                 <Select
                                                     style={{width: 280}}
-                                                    value={project.department}
-                                                    onChange={this.handleChange}
+                                                    value={this.state.projects[project.id].department}
+                                                    onChange={(e) => this.handleChange(e, project.id)}
                                                     inputProps={{name: 'department', id: 'department'}}>
                                                     {
                                                         this.departments.map(field => {
@@ -175,8 +193,8 @@ class MyProjects extends Component {
                                         <InputLabel htmlFor="researchfield">Field of Research</InputLabel>
                                         <Select
                                             style={{width: 280}}
-                                            value={project.researchfield}
-                                            onChange={this.handleChange}
+                                            value={this.state.projects[project.id].researchfield}
+                                            onChange={(e) => this.handleChange(e, project.id)}
                                             inputProps={{name: 'researchfield', id: 'researchfield'}}>
                                             {
                                                 this.research_fields.map(field => {
@@ -192,8 +210,8 @@ class MyProjects extends Component {
                                         <InputLabel>Field of Research (2nd)</InputLabel>
                                         <Select
                                             style={{width: 280}}
-                                            value={project.secondfield}
-                                            onChange={this.handleChange}
+                                            value={this.state.projects[project.id].secondfield}
+                                            onChange={(e) => this.handleChange(e, project.id)}
                                             inputProps={{name: 'secondfield', id: 'secondfield'}}>
                                             {
                                                 this.research_fields.map(field => {
@@ -210,8 +228,8 @@ class MyProjects extends Component {
                                         <InputLabel>Field of Research (3rd)</InputLabel>
                                         <Select
                                             style={{width: 280}}
-                                            value={project.thirdfield}
-                                            onChange={this.handleChange}
+                                            value={this.state.projects[project.id].thirdfield}
+                                            onChange={(e) => this.handleChange(e, project.id)}
                                             inputProps={{name: 'thirdfield', id: 'thirdfield'}}>
                                             {
                                                 this.research_fields.map(field => {
@@ -226,10 +244,48 @@ class MyProjects extends Component {
                                 <br/>
 
                                 <div>
+                                    <FormControl required={true}>
+                                        <InputLabel>School Year</InputLabel>
+                                        <Select
+                                            style={{width: 280}}
+                                            value={this.state.projects[project.id].year}
+                                            onChange={(e) => this.handleChange(e, project.id)}
+                                            inputProps={{name: 'year', id: 'year'}}>
+                                            {
+                                                this.years.map(field => {
+                                                    return (
+                                                        <MenuItem value={field}>{field}</MenuItem>
+                                                    );
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+
+                                    <FormControl style={{marginLeft: 50}}>
+                                        <InputLabel>School Quarter</InputLabel>
+                                        <Select
+                                            style={{width: 280}}
+                                            value={this.state.projects[project.id].quarter}
+                                            onChange={(e) => this.handleChange(e, project.id)}
+                                            inputProps={{name: 'quarter', id: 'quarter'}}>
+                                            {
+                                                this.quarters.map(field => {
+                                                    return (
+                                                        <MenuItem value={field}>{field}</MenuItem>
+                                                    );
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                                <br/>
+
+                                <div>
                                     <TextField
                                         label="Student Capacity"
                                         id="capacity"
-                                        onChange={this.handleChange}
+                                        value={this.state.projects[project.id].capacity}
+                                        onChange={(e) => this.handleChange(e, project.id)}
                                         inputProps={{name: 'capacity', id: 'capacity'}}
                                         required
                                         type="number"/>
@@ -241,7 +297,7 @@ class MyProjects extends Component {
                                     <FormLabel component="legend" required>School Quarter</FormLabel>
                                     <FormGroup>
                                         <FormControlLabel
-                                            control={<Checkbox name="year_quarter_0" checked={project.year_quarter_0} onChange={this.handleChecked} value="2018-2019 Autumn" />}
+                                            control={<Checkbox name="year_quarter_0" checked={this.state.projects[project.id].year_quarter_0} onChange={this.handleChecked} value="2018-2019 Autumn" />}
                                             label="2018-2019 Autumn"
                                             style={{width: 250}}
                                             />
@@ -251,7 +307,7 @@ class MyProjects extends Component {
                                                     <InputLabel>Compensation Type</InputLabel>
                                                     <Select
                                                         style={{width: 300}}
-                                                        value={project.compensation_type_0}
+                                                        value={this.state.projects[project.id].compensation_type_0}
                                                         onChange={this.handleChange}
                                                         inputProps={{name: 'compensation_type_0', id: 'compensation_type_0'}}>
 
@@ -261,7 +317,7 @@ class MyProjects extends Component {
                                                 </FormControl> : ""
                                         }
                                         <FormControlLabel
-                                            control={<Checkbox name="year_quarter_1" checked={project.year_quarter_1} onChange={this.handleChecked} value="2018-2019 Winter" />}
+                                            control={<Checkbox name="year_quarter_1" checked={this.state.projects[project.id].year_quarter_1} onChange={this.handleChecked} value="2018-2019 Winter" />}
                                             label="2018-2019 Winter"
                                             style={{width: 250}}
                                             />
@@ -271,7 +327,7 @@ class MyProjects extends Component {
                                                     <InputLabel>Compensation Type</InputLabel>
                                                     <Select
                                                         style={{width: 300}}
-                                                        value={project.compensation_type_1}
+                                                        value={this.state.projects[project.id].compensation_type_1}
                                                         onChange={this.handleChange}
                                                         inputProps={{name: 'compensation_type_1', id: 'compensation_type_1'}}>
 
@@ -281,7 +337,7 @@ class MyProjects extends Component {
                                                 </FormControl> : ""
                                         }
                                         <FormControlLabel
-                                            control={<Checkbox name="year_quarter_2" checked={project.year_quarter_2} onChange={this.handleChecked} value="2018-2019 Spring" />}
+                                            control={<Checkbox name="year_quarter_2" checked={this.state.projects[project.id].year_quarter_2} onChange={this.handleChecked} value="2018-2019 Spring" />}
                                             label="2018-2019 Spring"
                                             style={{width: 250}}
                                             />
@@ -291,7 +347,7 @@ class MyProjects extends Component {
                                                     <InputLabel>Compensation Type</InputLabel>
                                                     <Select
                                                         style={{width: 300}}
-                                                        value={project.compensation_type_2}
+                                                        value={this.state.projects[project.id].compensation_type_2}
                                                         onChange={this.handleChange}
                                                         inputProps={{name: 'compensation_type_2', id: 'compensation_type_2'}}>
 
@@ -301,7 +357,7 @@ class MyProjects extends Component {
                                                 </FormControl> : ""
                                         }
                                         <FormControlLabel
-                                            control={<Checkbox name="year_quarter_3" checked={project.year_quarter_3} onChange={this.handleChecked} value="2018-2019 Summer" />}
+                                            control={<Checkbox name="year_quarter_3" checked={this.state.projects[project.id].year_quarter_3} onChange={this.handleChecked} value="2018-2019 Summer" />}
                                             label="2018-2019 Summer"
                                             style={{width: 250}}
                                             />
@@ -311,7 +367,7 @@ class MyProjects extends Component {
                                                     <InputLabel>Compensation Type</InputLabel>
                                                     <Select
                                                         style={{width: 300}}
-                                                        value={project.compensation_type_3}
+                                                        value={this.state.projects[project.id].compensation_type_3}
                                                         onChange={this.handleChange}
                                                         inputProps={{name: 'compensation_type_3', id: 'compensation_type_3'}}>
 
@@ -389,14 +445,10 @@ class MyProjects extends Component {
     render() {
         var allProjectRows = [];
 
-        /*this.state.projects.forEach(project => {
-            const perProjectRows = this.renderProject(project);
-            allProjectRows = allProjectRows.concat(perProjectRows);
-        });*/
-
         for (var project_id in this.state.projects) {
             if (this.state.projects.hasOwnProperty(project_id)) {
-                console.log(project_id);
+                const perProjectRows = this.renderProject(this.state.projects[project_id]);
+                allProjectRows = allProjectRows.concat(perProjectRows);
             }
         }
 
