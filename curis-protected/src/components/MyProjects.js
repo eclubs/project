@@ -5,7 +5,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -16,6 +15,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 
 import './components.css'
 
@@ -52,28 +58,41 @@ class MyProjects extends Component {
         "Vision"
     ];
 
-    static years = [
+    years = [
         "2018-2019"
     ];
 
-    static quarters = [
+    quarters = [
         "Autumn",
         "Winter",
         "Spring",
         "Summer"
     ];
 
-    state = {
-        projects: {},
-        expandedRows : []
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            projects: {},
+            expandedRows : [],
+            dialogOpen: false,
+            dialogText: ""
+        };
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.dialogClose = this.dialogClose.bind(this);
+    }
+
+
 
     setProjectsToState(projects) {
         var projects_obj = {};
         for (var i=0; i<projects.length; i++) {
             projects_obj[projects[i].id] = projects[i];
+            projects_obj[projects[i].id]["updating"] = false;
         }
         this.setState({projects: projects_obj});
+        //console.log(this.state);
     }
 
     componentDidMount() {
@@ -95,17 +114,51 @@ class MyProjects extends Component {
     };
 
     handleChange = (event, proj_id) => {
-        console.log(proj_id);
-
         let projs = {...this.state.projects};
         projs[proj_id][event.target.name] = event.target.value;
         this.setState({projects: projs});
-
-        console.log(this.state);
     };
 
-    handleSubmit(event) {
+    handleSubmit(event, proj_id) {
+        event.preventDefault();
 
+        this.projectUpdating(proj_id);
+
+        const form = event.target;
+        const data = new FormData(form);
+
+        fetch('/protected/index.php/Csresearch/update_project', {
+            method: 'POST',
+            body: data})
+            .then(response => response.json())
+            .then(r => {
+                if (r.success) {
+                    this.setState({dialogText: "Project successfully updated."});
+                    this.setState({dialogOpen: true});
+                }
+                else {
+                    this.setState({dialogText: "Project updated failed."});
+                    this.setState({dialogOpen: true});
+                }
+                this.projectDoneUpdating(proj_id);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    dialogClose() {
+        this.setState({dialogOpen: false});
+    }
+
+    projectUpdating(project_id) {
+        let projs = {...this.state.projects};
+        projs[project_id]["updating"] = true;
+        this.setState({projects: projs});
+    }
+
+    projectDoneUpdating(project_id) {
+        let projs = {...this.state.projects};
+        projs[project_id]["updating"] = false;
+        this.setState({projects: projs});
     }
 
 
@@ -113,7 +166,7 @@ class MyProjects extends Component {
         const rowClick = () => this.handleRowClick(project.id);
         const thisProjectRows = [
             <TableRow key={project.id} onClick={rowClick}>
-                <TableCell>
+                <TableCell className="my_project_table_title">
                     {
                         project.type === "CURIS"
                         ? <img width="16px" height="16px" alt="CURIS project" title="CURIS project" src="static/images/curis_logo_small.png"/>
@@ -132,7 +185,7 @@ class MyProjects extends Component {
                 <TableRow key={"expanded-" + project.id}>
                     <TableCell colSpan={4}>
                         <Paper className="add-project-paper">
-                            <form onSubmit={this.handleSubmit} className="add-project-form">
+                            <form onSubmit={(e) => this.handleSubmit(e, project.id)}>
                                 <input type='hidden' name="id" value={project.id} />
                                 <div>
                                     <TextField
@@ -265,9 +318,9 @@ class MyProjects extends Component {
                                         <InputLabel>School Quarter</InputLabel>
                                         <Select
                                             style={{width: 280}}
-                                            value={this.state.projects[project.id].quarter}
+                                            value={this.state.projects[project.id].term}
                                             onChange={(e) => this.handleChange(e, project.id)}
-                                            inputProps={{name: 'quarter', id: 'quarter'}}>
+                                            inputProps={{name: 'term', id: 'term'}}>
                                             {
                                                 this.quarters.map(field => {
                                                     return (
@@ -291,116 +344,30 @@ class MyProjects extends Component {
                                         type="number"/>
                                 </div>
                                 <br/>
-                                <br/>
-
-                                <div>
-                                    <FormLabel component="legend" required>School Quarter</FormLabel>
-                                    <FormGroup>
-                                        <FormControlLabel
-                                            control={<Checkbox name="year_quarter_0" checked={this.state.projects[project.id].year_quarter_0} onChange={this.handleChecked} value="2018-2019 Autumn" />}
-                                            label="2018-2019 Autumn"
-                                            style={{width: 250}}
-                                            />
-                                        {
-                                            project.year_quarter_0 ?
-                                                <FormControl style={{marginLeft: 50}}>
-                                                    <InputLabel>Compensation Type</InputLabel>
-                                                    <Select
-                                                        style={{width: 300}}
-                                                        value={this.state.projects[project.id].compensation_type_0}
-                                                        onChange={this.handleChange}
-                                                        inputProps={{name: 'compensation_type_0', id: 'compensation_type_0'}}>
-
-                                                        <MenuItem value="Academic Credit">Academic Credit</MenuItem>
-                                                        <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
-                                                    </Select>
-                                                </FormControl> : ""
-                                        }
-                                        <FormControlLabel
-                                            control={<Checkbox name="year_quarter_1" checked={this.state.projects[project.id].year_quarter_1} onChange={this.handleChecked} value="2018-2019 Winter" />}
-                                            label="2018-2019 Winter"
-                                            style={{width: 250}}
-                                            />
-                                        {
-                                            project.year_quarter_1 ?
-                                                <FormControl style={{marginLeft: 50}}>
-                                                    <InputLabel>Compensation Type</InputLabel>
-                                                    <Select
-                                                        style={{width: 300}}
-                                                        value={this.state.projects[project.id].compensation_type_1}
-                                                        onChange={this.handleChange}
-                                                        inputProps={{name: 'compensation_type_1', id: 'compensation_type_1'}}>
-
-                                                        <MenuItem value="Academic Credit">Academic Credit</MenuItem>
-                                                        <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
-                                                    </Select>
-                                                </FormControl> : ""
-                                        }
-                                        <FormControlLabel
-                                            control={<Checkbox name="year_quarter_2" checked={this.state.projects[project.id].year_quarter_2} onChange={this.handleChecked} value="2018-2019 Spring" />}
-                                            label="2018-2019 Spring"
-                                            style={{width: 250}}
-                                            />
-                                        {
-                                            project.year_quarter_2 ?
-                                                <FormControl style={{marginLeft: 50}}>
-                                                    <InputLabel>Compensation Type</InputLabel>
-                                                    <Select
-                                                        style={{width: 300}}
-                                                        value={this.state.projects[project.id].compensation_type_2}
-                                                        onChange={this.handleChange}
-                                                        inputProps={{name: 'compensation_type_2', id: 'compensation_type_2'}}>
-
-                                                        <MenuItem value="Academic Credit">Academic Credit</MenuItem>
-                                                        <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
-                                                    </Select>
-                                                </FormControl> : ""
-                                        }
-                                        <FormControlLabel
-                                            control={<Checkbox name="year_quarter_3" checked={this.state.projects[project.id].year_quarter_3} onChange={this.handleChecked} value="2018-2019 Summer" />}
-                                            label="2018-2019 Summer"
-                                            style={{width: 250}}
-                                            />
-                                        {
-                                            project.year_quarter_3 ?
-                                                <FormControl style={{marginLeft: 50}}>
-                                                    <InputLabel>Compensation Type</InputLabel>
-                                                    <Select
-                                                        style={{width: 300}}
-                                                        value={this.state.projects[project.id].compensation_type_3}
-                                                        onChange={this.handleChange}
-                                                        inputProps={{name: 'compensation_type_3', id: 'compensation_type_3'}}>
-
-                                                        <MenuItem value="Academic Credit">Academic Credit</MenuItem>
-                                                        <MenuItem value="RAship (stipend)">RAship (stipend)</MenuItem>
-                                                    </Select>
-                                                </FormControl> : ""
-                                        }
-                                    </FormGroup>
-                                </div>
 
                                 <div>
                                     <TextField
-                                        label="Project URL (Optional)"
+                                        label="Project URL (optional)"
                                         id="url"
-                                        onChange={this.handleChange}
+                                        onChange={(e) => this.handleChange(e, project.id)}
                                         inputProps={{name: 'url', id: 'url'}}
-                                        value={project.url}
+                                        value={this.state.projects[project.id].url}
                                         style={{width: 800}}/>
                                 </div>
+                                <br/>
                                 <br/>
 
                                 <div>
                                     <TextField
                                         label="Description"
                                         id="description"
-                                        onChange={this.handleChange}
+                                        onChange={(e) => this.handleChange(e, project.id)}
                                         inputProps={{name: 'description', id: 'description'}}
                                         required
                                         multiline={true}
                                         rows={10}
-                                        value={project.description}
-                                        style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
+                                        value={this.state.projects[project.id].description}
+                                        className="my_project_description_input"/>
                                 </div>
                                 <br/>
 
@@ -408,13 +375,13 @@ class MyProjects extends Component {
                                     <TextField
                                         label="Recommended Background"
                                         id="background"
-                                        onChange={this.handleChange}
+                                        onChange={(e) => this.handleChange(e, project.id)}
                                         inputProps={{name: 'background', id: 'background'}}
                                         required
                                         multiline={true}
                                         rows={10}
-                                        value={project.background}
-                                        style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
+                                        value={this.state.projects[project.id].background}
+                                        className="my_project_description_input"/>
                                 </div>
                                 <br/>
 
@@ -422,13 +389,23 @@ class MyProjects extends Component {
                                     <TextField
                                         label="Prerequisite / Preparation"
                                         id="prerequisite"
-                                        onChange={this.handleChange}
+                                        onChange={(e) => this.handleChange(e, project.id)}
                                         inputProps={{name: 'prerequisite', id: 'prerequisite'}}
                                         required
                                         multiline={true}
                                         rows={10}
-                                        value={project.prerequisite}
-                                        style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
+                                        value={this.state.projects[project.id].prerequisite}
+                                        className="my_project_description_input"/>
+                                </div>
+
+                                <br/><br/>
+
+                                <div>
+                                    {
+                                        project.updating
+                                            ? <LinearProgress />
+                                            : <Button variant="contained" color="primary" type="submit">Update</Button>
+                                    }
                                 </div>
                             </form>
 
@@ -466,6 +443,25 @@ class MyProjects extends Component {
                         {allProjectRows}
                     </TableBody>
                 </Table>
+
+                <Dialog
+                    open={this.state.dialogOpen}
+                    onClose={this.dialogClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    >
+                    <DialogTitle id="alert-dialog-title">Project</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {this.state.dialogText}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.dialogClose} color="primary" autoFocus>
+                            Ok
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Paper>
         );
     }

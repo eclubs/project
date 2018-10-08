@@ -80,3 +80,15 @@ body {
   font-weight: bold;
   font-size: 18px;
 }
+
+.my_project_table_title {
+  cursor: pointer;
+}
+
+
+.my_project_description_input {
+  width: 800px;
+  border-style: dotted;
+  border-width: 1px;
+  padding: 5px
+}
