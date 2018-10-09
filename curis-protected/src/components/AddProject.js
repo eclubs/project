@@ -10,39 +10,51 @@ import Paper from '@material-ui/core/Paper';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import './components.css'
 
 class AddProject extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            project: {
+                title: '',
+                type: '',
+                department: '',
+                researchfield: '',
+                secondfield: '',
+                thirdfield: '',
+                year_quarter_0: false,
+                year_quarter_1: false,
+                year_quarter_2: false,
+                year_quarter_3: false,
+                compensation_type_0: '',
+                compensation_type_1: '',
+                compensation_type_2: '',
+                compensation_type_3: '',
+                url: '',
+                description: '',
+                background: '',
+                capacity: 0,
+                prerequisite: ''
+            },
+            updating: false,
+            dialogOpen: false,
+            dialogText: ""
+        };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleChecked = this.handleChecked.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
+        this.dialogClose = this.dialogClose.bind(this);
     }
-
-    state = {
-        title: '',
-        type: '',
-        department: '',
-        researchfield: '',
-        secondfield: '',
-        thirdfield: '',
-        year_quarter_0: false,
-        year_quarter_1: false,
-        year_quarter_2: false,
-        year_quarter_3: false,
-        compensation_type_0: '',
-        compensation_type_1: '',
-        compensation_type_2: '',
-        compensation_type_3: '',
-        url: '',
-        description: '',
-        background: '',
-        capacity: 0,
-        prerequisite: ''
-    };
 
     project_types = [
         "CURIS",
@@ -77,19 +89,21 @@ class AddProject extends Component {
     ];
 
     handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+        let project = {...this.state.project};
+        project[event.target.name] = event.target.value;
+        this.setState({project: project});
     };
 
     handleChecked = (event, checked) => {
-        console.log(event.target.name);
-        console.log(event.target);
-        this.setState({[event.target.name]: event.target.checked});
+        let project = {...this.state.project};
+        project[event.target.name] = event.target.checked;
+        this.setState({project: project});
     };
 
     handleSubmit(event) {
-        //console.log(this.state);
         event.preventDefault();
-        //const {title, researchfield, secondfield, thirdfield} = this.state;
+
+        this.setState({updating: true});
 
         const form = event.target;
         const data = new FormData(form);
@@ -97,32 +111,51 @@ class AddProject extends Component {
         fetch('/protected/index.php/Csresearch/add_project', {
             method: 'POST',
             body: data
-        });
+        })
+        .then(response => response.json())
+        .then(r => {
+            if (r.success) {
+                this.setState({dialogText: "Project successfully added."});
+            }
+            else {
+                this.setState({dialogText: "Project add failed."});
+            }
+            this.setState({dialogOpen: true});
+            this.setState({updating: false});
+        })
+        .catch(error => console.error('Error:', error));
     }
 
     handleReset(event) {
         event.preventDefault();
         this.setState({
-            title: '',
-            type: '',
-            department: '',
-            researchfield: '',
-            secondfield: '',
-            thirdfield: '',
-            year_quarter_0: false,
-            year_quarter_1: false,
-            year_quarter_2: false,
-            year_quarter_3: false,
-            compensation_type_0: '',
-            compensation_type_1: '',
-            compensation_type_2: '',
-            compensation_type_3: '',
-            url: '',
-            description: '',
-            background: '',
-            capacity: 0,
-            prerequisite: ''
+            project: {
+                title: '',
+                type: '',
+                department: '',
+                researchfield: '',
+                secondfield: '',
+                thirdfield: '',
+                year_quarter_0: false,
+                year_quarter_1: false,
+                year_quarter_2: false,
+                year_quarter_3: false,
+                compensation_type_0: '',
+                compensation_type_1: '',
+                compensation_type_2: '',
+                compensation_type_3: '',
+                url: '',
+                description: '',
+                background: '',
+                capacity: 0,
+                prerequisite: ''
+            },
+            updating: false
         });
+    }
+
+    dialogClose() {
+        this.setState({dialogOpen: false});
     }
 
     render() {
@@ -137,7 +170,7 @@ class AddProject extends Component {
                                 id="title"
                                 onChange={this.handleChange}
                                 inputProps={{name: 'title', id: 'title'}}
-                                value={this.state.title}
+                                value={this.state.project.title}
                                 required
                                 style={{width: 800}}/>
                         </div>
@@ -148,7 +181,7 @@ class AddProject extends Component {
                                 <InputLabel htmlFor="type">Project Type</InputLabel>
                                 <Select
                                     style={{width: 280}}
-                                    value={this.state.type}
+                                    value={this.state.project.type}
                                     onChange={this.handleChange}
                                     inputProps={{name: 'type', id: 'type'}}>
                                     {
@@ -167,7 +200,7 @@ class AddProject extends Component {
                                         <InputLabel htmlFor="type">Department</InputLabel>
                                         <Select
                                             style={{width: 280}}
-                                            value={this.state.department}
+                                            value={this.state.project.department}
                                             onChange={this.handleChange}
                                             inputProps={{name: 'department', id: 'department'}}>
                                             {
@@ -190,7 +223,7 @@ class AddProject extends Component {
                                 <InputLabel htmlFor="researchfield">Field of Research</InputLabel>
                                 <Select
                                     style={{width: 280}}
-                                    value={this.state.researchfield}
+                                    value={this.state.project.researchfield}
                                     onChange={this.handleChange}
                                     inputProps={{name: 'researchfield', id: 'researchfield'}}>
                                     {
@@ -207,7 +240,7 @@ class AddProject extends Component {
                                 <InputLabel>Field of Research (2nd)</InputLabel>
                                 <Select
                                     style={{width: 280}}
-                                    value={this.state.secondfield}
+                                    value={this.state.project.secondfield}
                                     onChange={this.handleChange}
                                     inputProps={{name: 'secondfield', id: 'secondfield'}}>
                                     {
@@ -225,7 +258,7 @@ class AddProject extends Component {
                                 <InputLabel>Field of Research (3rd)</InputLabel>
                                 <Select
                                     style={{width: 280}}
-                                    value={this.state.thirdfield}
+                                    value={this.state.project.thirdfield}
                                     onChange={this.handleChange}
                                     inputProps={{name: 'thirdfield', id: 'thirdfield'}}>
                                     {
@@ -244,6 +277,7 @@ class AddProject extends Component {
                             <TextField
                                 label="Student Capacity"
                                 id="capacity"
+                                value={this.state.project.capacity}
                                 onChange={this.handleChange}
                                 inputProps={{name: 'capacity', id: 'capacity'}}
                                 required
@@ -256,17 +290,17 @@ class AddProject extends Component {
                             <FormLabel component="legend" required>School Quarter</FormLabel>
                             <FormGroup>
                                 <FormControlLabel
-                                    control={<Checkbox name="year_quarter_0" checked={this.state.year_quarter_0} onChange={this.handleChecked} value="2018-2019 Autumn" />}
+                                    control={<Checkbox name="year_quarter_0" checked={this.state.project.year_quarter_0} onChange={this.handleChecked} value="2018-2019 Autumn" />}
                                     label="2018-2019 Autumn"
                                     style={{width: 250}}
                                     />
                                 {
-                                    this.state.year_quarter_0 ?
+                                    this.state.project.year_quarter_0 ?
                                         <FormControl style={{marginLeft: 50}}>
                                             <InputLabel>Compensation Type</InputLabel>
                                             <Select
                                                 style={{width: 300}}
-                                                value={this.state.compensation_type_0}
+                                                value={this.state.project.compensation_type_0}
                                                 onChange={this.handleChange}
                                                 inputProps={{name: 'compensation_type_0', id: 'compensation_type_0'}}>
 
@@ -276,17 +310,17 @@ class AddProject extends Component {
                                         </FormControl> : ""
                                 }
                                 <FormControlLabel
-                                    control={<Checkbox name="year_quarter_1" checked={this.state.year_quarter_1} onChange={this.handleChecked} value="2018-2019 Winter" />}
+                                    control={<Checkbox name="year_quarter_1" checked={this.state.project.year_quarter_1} onChange={this.handleChecked} value="2018-2019 Winter" />}
                                     label="2018-2019 Winter"
                                     style={{width: 250}}
                                     />
                                 {
-                                    this.state.year_quarter_1 ?
+                                    this.state.project.year_quarter_1 ?
                                         <FormControl style={{marginLeft: 50}}>
                                             <InputLabel>Compensation Type</InputLabel>
                                             <Select
                                                 style={{width: 300}}
-                                                value={this.state.compensation_type_1}
+                                                value={this.state.project.compensation_type_1}
                                                 onChange={this.handleChange}
                                                 inputProps={{name: 'compensation_type_1', id: 'compensation_type_1'}}>
 
@@ -296,17 +330,17 @@ class AddProject extends Component {
                                         </FormControl> : ""
                                 }
                                 <FormControlLabel
-                                    control={<Checkbox name="year_quarter_2" checked={this.state.year_quarter_2} onChange={this.handleChecked} value="2018-2019 Spring" />}
+                                    control={<Checkbox name="year_quarter_2" checked={this.state.project.year_quarter_2} onChange={this.handleChecked} value="2018-2019 Spring" />}
                                     label="2018-2019 Spring"
                                     style={{width: 250}}
                                     />
                                 {
-                                    this.state.year_quarter_2 ?
+                                    this.state.project.year_quarter_2 ?
                                         <FormControl style={{marginLeft: 50}}>
                                             <InputLabel>Compensation Type</InputLabel>
                                             <Select
                                                 style={{width: 300}}
-                                                value={this.state.compensation_type_2}
+                                                value={this.state.project.compensation_type_2}
                                                 onChange={this.handleChange}
                                                 inputProps={{name: 'compensation_type_2', id: 'compensation_type_2'}}>
 
@@ -316,17 +350,17 @@ class AddProject extends Component {
                                         </FormControl> : ""
                                 }
                                 <FormControlLabel
-                                    control={<Checkbox name="year_quarter_3" checked={this.state.year_quarter_3} onChange={this.handleChecked} value="2018-2019 Summer" />}
+                                    control={<Checkbox name="year_quarter_3" checked={this.state.project.year_quarter_3} onChange={this.handleChecked} value="2018-2019 Summer" />}
                                     label="2018-2019 Summer"
                                     style={{width: 250}}
                                     />
                                 {
-                                    this.state.year_quarter_3 ?
+                                    this.state.project.year_quarter_3 ?
                                         <FormControl style={{marginLeft: 50}}>
                                             <InputLabel>Compensation Type</InputLabel>
                                             <Select
                                                 style={{width: 300}}
-                                                value={this.state.compensation_type_3}
+                                                value={this.state.project.compensation_type_3}
                                                 onChange={this.handleChange}
                                                 inputProps={{name: 'compensation_type_3', id: 'compensation_type_3'}}>
 
@@ -344,6 +378,7 @@ class AddProject extends Component {
                                 id="url"
                                 onChange={this.handleChange}
                                 inputProps={{name: 'url', id: 'url'}}
+                                value={this.state.project.url}
                                 style={{width: 800}}/>
                         </div>
                         <br/>
@@ -357,7 +392,7 @@ class AddProject extends Component {
                                 required
                                 multiline={true}
                                 rows={10}
-                                value={this.state.description}
+                                value={this.state.project.description}
                                 style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
                         </div>
                         <br/>
@@ -371,7 +406,7 @@ class AddProject extends Component {
                                 required
                                 multiline={true}
                                 rows={10}
-                                value={this.state.background}
+                                value={this.state.project.background}
                                 style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
                         </div>
                         <br/>
@@ -385,20 +420,44 @@ class AddProject extends Component {
                                 required
                                 multiline={true}
                                 rows={10}
-                                value={this.state.prerequisite}
+                                value={this.state.project.prerequisite}
                                 style={{width: 800, 'border-style': 'dotted', 'border-width': '1px', padding: 5}}/>
                         </div>
 
                         <br/><br/>
 
-                        <div>
-                            <Button variant="contained" color="primary" type="submit">Submit</Button>
-                            &nbsp;&nbsp;&nbsp;
-                            <Button variant="contained" color="primary" type="button" onClick={this.handleReset}>Clear
-                                Values</Button>
-                        </div>
+                        {
+                            this.state.updating
+                                ? <LinearProgress />
+                                :
+                                    <div>
+                                        <Button variant="contained" color="primary" type="submit">Submit</Button>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <Button variant="contained" color="primary" type="button" onClick={this.handleReset}>Clear
+                                            Values</Button>
+                                    </div>
+                        }
                     </form>
                 </Paper>
+
+                <Dialog
+                    open={this.state.dialogOpen}
+                    onClose={this.dialogClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    >
+                    <DialogTitle id="alert-dialog-title">Project</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {this.state.dialogText}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.dialogClose} color="primary" autoFocus>
+                            Ok
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }

@@ -21,7 +21,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import './components.css'
 
@@ -76,7 +76,8 @@ class MyProjects extends Component {
             projects: {},
             expandedRows : [],
             dialogOpen: false,
-            dialogText: ""
+            dialogText: "",
+            loading: true
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -98,7 +99,10 @@ class MyProjects extends Component {
     componentDidMount() {
         fetch('/protected/index.php/Csresearch/get_my_projects')
             .then(response => response.json())
-            .then(data => this.setProjectsToState(data.projects))
+            .then(data => {
+                this.setProjectsToState(data.projects);
+                this.setState({loading: false});
+            })
             .catch(error => console.error('Error:', error));
     }
 
@@ -137,7 +141,7 @@ class MyProjects extends Component {
                     this.setState({dialogOpen: true});
                 }
                 else {
-                    this.setState({dialogText: "Project updated failed."});
+                    this.setState({dialogText: "Project update failed."});
                     this.setState({dialogOpen: true});
                 }
                 this.projectDoneUpdating(proj_id);
@@ -430,6 +434,9 @@ class MyProjects extends Component {
         }
 
         return (
+            this.state.loading
+                ? <CircularProgress size={50} style={{marginTop: 220}}/>
+                :
             <Paper>
                 <Table>
                     <TableHead>
