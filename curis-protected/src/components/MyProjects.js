@@ -77,11 +77,16 @@ class MyProjects extends Component {
             expandedRows : [],
             dialogOpen: false,
             dialogText: "",
+            confirmDialogOpen: false,
+            confirmDialogText: "",
+            projectIdToDelete: 0,
             loading: true
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.dialogClose = this.dialogClose.bind(this);
+        this.handleComfirmOk = this.handleComfirmOk.bind(this);
+        this.handleComfirmCancel = this.handleComfirmCancel.bind(this);
     }
 
 
@@ -115,13 +120,13 @@ class MyProjects extends Component {
             currentExpandedRows.concat(projectId);
 
         this.setState({expandedRows : newExpandedRows});
-    };
+    }
 
     handleChange = (event, proj_id) => {
         let projs = {...this.state.projects};
         projs[proj_id][event.target.name] = event.target.value;
         this.setState({projects: projs});
-    };
+    }
 
     handleSubmit(event, proj_id) {
         event.preventDefault();
@@ -149,8 +154,47 @@ class MyProjects extends Component {
             .catch(error => console.error('Error:', error));
     }
 
+    handleDelete(proj_id) {
+        let text = "Are you sure you want to delete project \"" + this.state.projects[proj_id].title + "\"?";
+        this.setState({projectIdToDelete: proj_id});
+        this.setState({confirmDialogText: text});
+        this.setState({confirmDialogOpen: true});
+
+
+    }
+
+    handleComfirmOk() {
+        this.projectUpdating(this.state.projectIdToDelete);
+        let data = {id: this.state.projectIdToDelete};
+        fetch('/protected/index.php/Csresearch/remove_project', {
+            method: 'POST',
+            body: data})
+            .then(response => response.json())
+            .then(r => {
+                if (r.success) {
+                    this.setState({dialogText: "Project successfully deleted."});
+                    this.setState({dialogOpen: true});
+                }
+                else {
+                    this.setState({dialogText: "Project delete failed."});
+                    this.setState({dialogOpen: true});
+                }
+                this.projectDoneUpdating(this.state.projectIdToDelete);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    handleComfirmCancel() {
+        this.setState({projectIdToDelete: 0});
+        this.setState({confirmDialogOpen: false});
+    }
+
     dialogClose() {
         this.setState({dialogOpen: false});
+    }
+
+    confirmDialogClose() {
+        this.setState({confirmDialogOpen: false});
     }
 
     projectUpdating(project_id) {
@@ -408,7 +452,10 @@ class MyProjects extends Component {
                                     {
                                         project.updating
                                             ? <LinearProgress />
-                                            : <Button variant="contained" color="primary" type="submit">Update</Button>
+                                            : <div>
+                                                <Button variant="contained" color="primary" type="submit">Update</Button>
+                                                <img src="static/images/trash1.png" className="my_project_trash_button" onClick={() => this.handleDelete(project.id)}/>
+                                              </div>
                                     }
                                 </div>
                             </form>
@@ -421,6 +468,56 @@ class MyProjects extends Component {
         }
 
         return thisProjectRows;
+    }
+
+    renderDialog() {
+        return (
+            <Dialog
+                open={this.state.dialogOpen}
+                onClose={this.dialogClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description">
+                <DialogTitle id="alert-dialog-title">Project</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {this.state.dialogText}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.dialogClose} color="primary" autoFocus>
+                        Ok
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        )
+    }
+
+    renderConfirmDialog() {
+        return (
+            <Dialog
+                open={this.state.confirmDialogOpen}
+                onClose={this.confirmDialogClose}
+                disableBackdropClick
+                disableEscapeKeyDown
+                maxWidth="xs"
+                aria-labelledby="confirmation-dialog-title"
+                >
+                <DialogTitle id="confirmation-dialog-title">Delete Project</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {this.state.confirmDialogText}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.handleComfirmOk} color="primary">
+                        Yes
+                    </Button>
+                    <Button onClick={this.handleComfirmCancel} color="primary">
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
     }
 
     render() {
@@ -437,39 +534,23 @@ class MyProjects extends Component {
             this.state.loading
                 ? <CircularProgress size={50} style={{marginTop: 220}}/>
                 :
-            <Paper>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell scope="col">Title</TableCell>
-                            <TableCell>Students</TableCell>
-                            <TableCell>Research Area</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {allProjectRows}
-                    </TableBody>
-                </Table>
+                    <Paper>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell scope="col">Title</TableCell>
+                                    <TableCell>Students</TableCell>
+                                    <TableCell>Research Area</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {allProjectRows}
+                            </TableBody>
+                        </Table>
 
-                <Dialog
-                    open={this.state.dialogOpen}
-                    onClose={this.dialogClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                    >
-                    <DialogTitle id="alert-dialog-title">Project</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            {this.state.dialogText}
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.dialogClose} color="primary" autoFocus>
-                            Ok
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </Paper>
+                        { this.renderDialog() }
+                        { this.renderConfirmDialog() }
+                    </Paper>
         );
     }
 

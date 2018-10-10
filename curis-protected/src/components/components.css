@@ -92,3 +92,11 @@ body {
   border-width: 1px;
   padding: 5px
 }
+
+.my_project_trash_button {
+  width: 32px;
+  height: 32px;
+  margin-left: 26px;
+  vertical-align: bottom;
+  cursor: pointer;
+}
