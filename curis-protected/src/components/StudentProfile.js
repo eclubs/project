@@ -14,7 +14,6 @@ class StudentProfile extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChecked = this.handleChecked.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleReset = this.handleReset.bind(this);
     }
 
     state = {
@@ -65,11 +64,6 @@ class StudentProfile extends Component {
             method: 'POST',
             body: data
         });
-    }
-
-    handleReset(event) {
-        alert('reset!');
-        event.preventDefault();
     }
 
     render() {

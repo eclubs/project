@@ -10,10 +10,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -25,7 +21,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import './components.css'
 
-class MyProjects extends Component {
+class FacultyMyProjects extends Component {
     project_types = [
         "CURIS",
         "Year Round Research"
@@ -102,6 +98,10 @@ class MyProjects extends Component {
     }
 
     componentDidMount() {
+        this.fetchMyProjects();
+    }
+
+    fetchMyProjects() {
         fetch('/protected/index.php/Csresearch/get_my_projects')
             .then(response => response.json())
             .then(data => {
@@ -159,19 +159,21 @@ class MyProjects extends Component {
         this.setState({projectIdToDelete: proj_id});
         this.setState({confirmDialogText: text});
         this.setState({confirmDialogOpen: true});
-
-
     }
 
     handleComfirmOk() {
+        this.confirmDialogClose();
         this.projectUpdating(this.state.projectIdToDelete);
-        let data = {id: this.state.projectIdToDelete};
+        let formData = new FormData();
+        formData.set('id', this.state.projectIdToDelete);
+
         fetch('/protected/index.php/Csresearch/remove_project', {
             method: 'POST',
-            body: data})
+            body: formData})
             .then(response => response.json())
             .then(r => {
                 if (r.success) {
+                    this.fetchMyProjects();
                     this.setState({dialogText: "Project successfully deleted."});
                     this.setState({dialogOpen: true});
                 }
@@ -181,7 +183,12 @@ class MyProjects extends Component {
                 }
                 this.projectDoneUpdating(this.state.projectIdToDelete);
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                this.setState({dialogText: "Error when deleting project, see log for details."});
+                this.setState({dialogOpen: true});
+                this.projectDoneUpdating(this.state.projectIdToDelete);
+            });
     }
 
     handleComfirmCancel() {
@@ -231,7 +238,7 @@ class MyProjects extends Component {
         if (this.state.expandedRows.includes(project.id)) {
             thisProjectRows.push(
                 <TableRow key={"expanded-" + project.id}>
-                    <TableCell colSpan={4}>
+                    <TableCell colSpan={4} style={{backgroundColor: '#EDEDED'}}>
                         <Paper className="add-project-paper">
                             <form onSubmit={(e) => this.handleSubmit(e, project.id)}>
                                 <input type='hidden' name="id" value={project.id} />
@@ -415,7 +422,7 @@ class MyProjects extends Component {
                                         multiline={true}
                                         rows={10}
                                         value={this.state.projects[project.id].description}
-                                        className="my_project_description_input"/>
+                                        className="my-project-description-input"/>
                                 </div>
                                 <br/>
 
@@ -429,7 +436,7 @@ class MyProjects extends Component {
                                         multiline={true}
                                         rows={10}
                                         value={this.state.projects[project.id].background}
-                                        className="my_project_description_input"/>
+                                        className="my-project-description-input"/>
                                 </div>
                                 <br/>
 
@@ -443,7 +450,7 @@ class MyProjects extends Component {
                                         multiline={true}
                                         rows={10}
                                         value={this.state.projects[project.id].prerequisite}
-                                        className="my_project_description_input"/>
+                                        className="my-project-description-input"/>
                                 </div>
 
                                 <br/><br/>
@@ -454,7 +461,12 @@ class MyProjects extends Component {
                                             ? <LinearProgress />
                                             : <div>
                                                 <Button variant="contained" color="primary" type="submit">Update</Button>
-                                                <img src="static/images/trash1.png" className="my_project_trash_button" onClick={() => this.handleDelete(project.id)}/>
+                                                <img
+                                                    src="static/images/trash1.png"
+                                                    className="my_project_trash_button"
+                                                    alt="Remove this project"
+                                                    title="Remove this project"
+                                                    onClick={() => this.handleDelete(project.id)}/>
                                               </div>
                                     }
                                 </div>
@@ -534,8 +546,8 @@ class MyProjects extends Component {
             this.state.loading
                 ? <CircularProgress size={50} style={{marginTop: 220}}/>
                 :
-                    <Paper>
-                        <Table>
+                    <Paper className="content-paper">
+                        <Table padding="dense">
                             <TableHead>
                                 <TableRow>
                                     <TableCell scope="col">Title</TableCell>
@@ -556,4 +568,4 @@ class MyProjects extends Component {
 
 }
 
-export default MyProjects
+export default FacultyMyProjects

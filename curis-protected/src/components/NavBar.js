@@ -34,7 +34,7 @@ function NavBar(props) {
                     <Typography variant="title" color="inherit" align="left" className={classes.flex} onClick={go_home}>
                         Stanford CS Research
                     </Typography>
-                    <UserIcon user={props.user}/>
+                    <UserIcon user={props.user} onUserProfileChange={props.onUserProfileChange}/>
                 </Toolbar>
             </AppBar>
         </div>

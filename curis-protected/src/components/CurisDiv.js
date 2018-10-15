@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import CurisInfo from './CurisInfo'
-import StudentProfile from './StudentProfile'
+import CurisHome from './CurisHome'
+import CurisProjects from './CurisProjects'
+
 import './components.css'
 
 class CurisDiv extends Component {
@@ -18,17 +19,16 @@ class CurisDiv extends Component {
     render() {
         return (
             <div className="main-working-div-paper">
-                <AppBar position="static" style={{'background-color': '#589D57'}}>
+                <AppBar position="fixed" style={{backgroundColor: '#ffffff', color: '#000000', marginTop: 64}}>
                     <Tabs value={this.state.tab} onChange={this.handleTabClick}>
                         <Tab label="Home" />
-                        <Tab label="My Profile" />
                         <Tab label="Projects" />
                         <Tab label="My Applications" />
                         <Tab label="FAQ" />
                     </Tabs>
                 </AppBar>
-                {this.state.tab === 0 && <CurisInfo />}
-                {this.state.tab === 1 && <StudentProfile pageHandler={this.props.pageHandler} />}
+                {this.state.tab === 0 && <CurisHome />}
+                {this.state.tab === 1 && <CurisProjects />}
             </div>
         )
     }

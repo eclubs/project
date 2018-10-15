@@ -311,9 +311,13 @@ var faculties_for_project_store = new Ext.data.ArrayStore({
 var page_names_store = new Ext.data.ArrayStore({
   fields: ['view', 'display_name'],
   data: [
-    ['landing', 'Landing'],
-    ['student.home', 'Student Home'],
-    ['faculty.home', 'Faculty Home']
+    ['landing', 'Landing Page'],
+    ['academic_year.home', 'Academic Year Research Student Home'],
+    ['academic_year.faq', 'Academic Year Research Student FAQ'],
+    ['curis.home', 'CURIS Student Home'],
+    ['curis.faq', 'CURIS Student FAQ'],
+    ['faculty.home', 'Faculty Home'],
+    ['faculty.faq', 'Faculty FAQ']
   ]
 });
 

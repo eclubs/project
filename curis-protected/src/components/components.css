@@ -46,18 +46,19 @@ body {
 }
 
 .main-working-div-paper {
-  margin: 80px 20px 20px 20px;
-}
-
-.add-project-div {
-  //border-color: black;
-  //border: 1px;
-  //border-style: solid;
+  //margin: 80px 20px 20px 20px;
+  margin-top: 66px;
 }
 
 .add-project-paper {
   margin-top: 10px;
   //margin: 5px;
+  padding: 20px;
+  text-align: left;
+}
+
+.content-paper {
+  margin-top: 120px;
   padding: 20px;
   text-align: left;
 }
@@ -86,7 +87,7 @@ body {
 }
 
 
-.my_project_description_input {
+.my-project-description-input {
   width: 800px;
   border-style: dotted;
   border-width: 1px;
@@ -100,3 +101,24 @@ body {
   vertical-align: bottom;
   cursor: pointer;
 }
+
+.user-icon-img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.user-profile-dialog-title {
+  flex: 1
+}
+
+.user-profile-paper {
+  margin: 80px 5px 5px 5px;
+  padding: 20px;
+  text-align: left;
+}
+
+.user-profile-app-bar {
+  position: relative
+}
+

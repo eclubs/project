@@ -4,7 +4,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import './components.css'
 
-class FacultyHome extends Component {
+class AcademicYearInfo extends Component {
 
     state = {
         infoPage: "",
@@ -12,11 +12,9 @@ class FacultyHome extends Component {
     };
 
     componentDidMount() {
-        fetch('/protected/index.php/Csresearch/get_dyn_page/faculty.home')
+        fetch('/protected/index.php/Csresearch/get_dyn_page/academic_year.home')
             .then(response => response.text())
-            .then(text => {
-                this.setState({infoPage: text, loading: false});
-            })
+            .then(text => this.setState({infoPage: text, loading: false}))
             .catch(error => console.error('Error:', error));
     }
 
@@ -24,10 +22,13 @@ class FacultyHome extends Component {
         return (
             this.state.loading
                 ? <CircularProgress size={50} style={{marginTop: 220}}/>
-                : <Paper className="content-paper" dangerouslySetInnerHTML={{__html: this.state.infoPage}}></Paper>
-
+                :
+                    <div>
+                        <Paper className="add-project-paper" dangerouslySetInnerHTML={{__html: this.state.infoPage}}>
+                        </Paper>
+                    </div>
         )
     }
 }
 
-export default FacultyHome;
+export default AcademicYearInfo;

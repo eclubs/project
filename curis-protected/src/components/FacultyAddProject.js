@@ -18,7 +18,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import './components.css'
 
-class AddProject extends Component {
+class FacultyAddProject extends Component {
     constructor(props) {
         super(props);
 
@@ -160,8 +160,8 @@ class AddProject extends Component {
 
     render() {
         return (
-            <div className="add-project-div">
-                <Paper className="add-project-paper">
+            <React.Fragment>
+                <Paper className="content-paper">
 
                     <form onSubmit={this.handleSubmit} className="add-project-form">
                         <div>
@@ -458,10 +458,10 @@ class AddProject extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-            </div>
+            </React.Fragment>
         );
     }
 
 }
 
-export default AddProject
+export default FacultyAddProject

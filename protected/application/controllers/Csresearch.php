@@ -323,9 +323,9 @@ class Csresearch extends CI_Controller
             }
         }
 
-        $project = new Project($proj_id);
-        $status = $project->delete();
-        $this->status_json($status, "");
+        $project = Project::find($proj_id);
+        $project->delete();
+        $this->status_json(true, "");
     }
 
     public function close_project()
@@ -586,20 +586,21 @@ class Csresearch extends CI_Controller
             return;
         }
 
-        $user = new User($id);
+        //$user = new User($id);
+        $user = User::find($id);
         $user->suid = $_POST['suid'];
         $user->email = $_POST['email'];
         $user->webpage = $_POST['webpage'];
         $user->interestarea = $_POST['interestarea'];
         $user->major = $_POST['major'];
         $user->gpa = $_POST['gpa'];
-        $user->graduating = $_POST['graduating'];
-        $user->majorwhen = $_POST['majorwhen'];
-        $user->coterm = $_POST['coterm'];
+        //$user->graduating = $_POST['graduating'];
+        //$user->majorwhen = $_POST['majorwhen'];
+        //$user->coterm = $_POST['coterm'];
         $user->year = $_POST['year'];
 
         // performing upload
-        $status = true;
+        /*$status = true;
         $fileName = $_FILES['transcript']['name'];
         if ($fileName) {
             $tmpName = $_FILES['transcript']['tmp_name'];
@@ -627,10 +628,11 @@ class Csresearch extends CI_Controller
             if ($status2) {
                 $user->resume = $relativeUploadPath;
             }
-        }
+        }*/
 
         $status3 = $user->save();
-        if ($status && $status2 && $status3) {
+        //if ($status && $status2 && $status3) {
+        if ($status3) {
             //$fp      = fopen($tmpName, 'r');
             //$content = fread($fp, filesize($tmpName));
             //$content = addslashes($content);
@@ -639,12 +641,13 @@ class Csresearch extends CI_Controller
             //    $fileName = addslashes($fileName);
             //}
             //$query = "INSERT INTO yourdatabasetable (`name`, `size`, `type`, `file`) VALUES ('".$fileName."','".$fileSize."', '".$fileType."', '".$content."')";
-            //mysql_query($query);         
+            //mysql_query($query);
             //$o = "{\"success\":true, \"data\":\"$status\"}";
             $this->success_json(0);
             return;
         } else {
-            $this->failure_json("Error : s1={$status} s2={$status2} s3={$status3}");
+            //$this->failure_json("Error : s1={$status} s2={$status2} s3={$status3}");
+            $this->failure_json("Error : s3={$status3}");
             return;
         }
     }

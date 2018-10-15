@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
+import AcademicYearInfo from './AcademicYearInfo'
+
 import './components.css'
 
 class AcademicYearDiv extends Component {
@@ -16,14 +18,15 @@ class AcademicYearDiv extends Component {
     render() {
         return (
             <div className="main-working-div-paper">
-                <AppBar position="static" style={{'background-color': '#F55A05'}}>
+                <AppBar position="fixed" style={{backgroundColor: '#ffffff', color: '#000000', marginTop: 64}}>
                     <Tabs value={this.state.tab} onChange={this.handleTabClick}>
-                        <Tab label="My Profile" />
+                        <Tab label="Home" />
                         <Tab label="Projects" />
                         <Tab label="My Applications" />
                         <Tab label="FAQ" />
                     </Tabs>
                 </AppBar>
+                {this.state.tab === 0 && <AcademicYearInfo />}
             </div>
         )
     }

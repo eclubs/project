@@ -31,14 +31,24 @@ class App extends Component {
             .catch(error => console.error('Error:', error));
     }
 
+    handleUserProfileChange = (event) => {
+        let user = {};
+        user = Object.assign(this.state.user, user);
+        user[event.target.name] = event.target.value;
+        this.setState({user});
+    };
+
     render() {
         return (
             <div className="App">
-                <NavBar user={this.state.user}/>
-                {this.state.user.sunetid === 'llao'
-                    || this.state.user.sunetid === 'plevis'
-                    || this.state.user.sunetid === 'mbernst'
-                    ? <MainDiv /> : <UnderDevelopment />}
+                <NavBar user={this.state.user} onUserProfileChange={this.handleUserProfileChange}/>
+                {
+                    this.state.user.sunetid === 'llao'
+                        || this.state.user.sunetid === 'plevis'
+                        || this.state.user.sunetid === 'mbernst'
+                        ? <MainDiv />
+                        : <UnderDevelopment />
+                }
             </div>
         );
     }
