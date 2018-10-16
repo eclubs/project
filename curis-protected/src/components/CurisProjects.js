@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -173,26 +174,64 @@ class CurisProjects extends Component {
 
     renderFilters() {
         return (
-            <Select
-                style={{width: 280}}
-                onChange={this.handleChange}
-                inputProps={{name: 'year', id: 'year'}}>
-                {
-                    this.years.map(field => {
-                        return (
-                            <MenuItem value={field}>{field}</MenuItem>
-                        );
-                    })
-                }
-            </Select>
+            <React.Fragment>
+                <Typography>Select Project Filters:</Typography>
+                <FormControl>
+                    <InputLabel htmlFor="year">School Year</InputLabel>
+                    <Select
+                        style={{width: 160, marginRight: 40}}
+                        onChange={this.handleChange}
+                        inputProps={{name: 'year', id: 'year'}}>
+                        {
+                            this.years.map(field => {
+                                return (
+                                    <MenuItem value={field}>{field}</MenuItem>
+                                );
+                            })
+                        }
+                    </Select>
+                </FormControl>
+
+                <FormControl>
+                    <InputLabel htmlFor="term">School Quarter</InputLabel>
+                    <Select
+                        style={{width: 160, marginRight: 40}}
+                        onChange={this.handleChange}
+                        inputProps={{name: 'term', id: 'term'}}>
+                        {
+                            this.quarters.map(field => {
+                                return (
+                                    <MenuItem value={field}>{field}</MenuItem>
+                                );
+                            })
+                        }
+                    </Select>
+                </FormControl>
+
+                <FormControl>
+                    <InputLabel htmlFor="researchfield">Research Area</InputLabel>
+                    <Select
+                        style={{width: 280, marginRight: 40}}
+                        onChange={this.handleChange}
+                        inputProps={{name: 'researchfield', id: 'researchfield'}}>
+                        {
+                            this.research_fields.map(field => {
+                                return (
+                                    <MenuItem value={field}>{field}</MenuItem>
+                                );
+                            })
+                        }
+                    </Select>
+                </FormControl>
+            </React.Fragment>
         )
     }
 
     render() {
         return (
-            <div>
+            <Paper className="content-paper">
                 { this.renderFilters() }
-            </div>
+            </Paper>
         )
     }
 

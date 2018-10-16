@@ -18,6 +18,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import './components.css'
 
@@ -76,7 +78,9 @@ class FacultyMyProjects extends Component {
             confirmDialogOpen: false,
             confirmDialogText: "",
             projectIdToDelete: 0,
-            loading: true
+            loading: true,
+            sortBy: "title",
+            sortDirection: "asc"
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -84,8 +88,6 @@ class FacultyMyProjects extends Component {
         this.handleComfirmOk = this.handleComfirmOk.bind(this);
         this.handleComfirmCancel = this.handleComfirmCancel.bind(this);
     }
-
-
 
     setProjectsToState(projects) {
         var projects_obj = {};
@@ -96,6 +98,8 @@ class FacultyMyProjects extends Component {
         this.setState({projects: projects_obj});
         //console.log(this.state);
     }
+
+
 
     componentDidMount() {
         this.fetchMyProjects();
@@ -547,10 +551,12 @@ class FacultyMyProjects extends Component {
                 ? <CircularProgress size={50} style={{marginTop: 220}}/>
                 :
                     <Paper className="content-paper">
-                        <Table padding="dense">
-                            <TableHead>
+                        <Table>
+                            <TableHead className="table-header">
                                 <TableRow>
-                                    <TableCell scope="col">Title</TableCell>
+                                    <TableCell scope="col">Project Title <ArrowDropUpIcon style={{verticalAlign: 'middle'}}/>
+
+                                    </TableCell>
                                     <TableCell>Students</TableCell>
                                     <TableCell>Research Area</TableCell>
                                 </TableRow>
